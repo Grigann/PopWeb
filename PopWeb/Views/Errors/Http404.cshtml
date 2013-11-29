@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="text-primary"><span class="fa fa-frown-o fa-2x" style="margin-right: 0.4em;"></span>Oups... Il semblerait que la page demand&eacute;e n'existe pas...</h2>
+        <h4 style="margin-top: 2em;">Si cela peut vous aider, l'adresse à laquelle vous tentiez d'accéder est :</h4>
+        <h4 style="margin-top: 1em;"><strong>@ViewData["errorPath"]</strong></h4>
+    </div>
+</div>

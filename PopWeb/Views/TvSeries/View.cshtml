@@ -1,0 +1,264 @@
+﻿@model Pop.Domain.Entities.TvSerie
+
+@{
+    ViewBag.Title = "Pop-culture &amp; Divertissement";
+    ViewBag.ActiveMenu = "#tv-series-menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2><span class="fa fa-desktop fa-lg" style="margin-right: 0.8em;"></span>S&eacute;ries t&eacute;l&eacute;</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12" style="margin: 1.6em 0 2em 0;">
+            <h3 style="display: inline;"><strong>@Model.Title</strong></h3>
+            @if (Request.IsAuthenticated) {
+            <form role="form" action="@Url.Action("Edit", "TvSeries", new { id = Model.Id })" method="get" style="display: inline; margin-left: 1.4em;">
+                <button type="submit" class="btn btn-default" style="margin-top: -0.6em;"><span class="fa fa-edit fa-lg"></span></button>
+            </form>
+            }
+        </div>
+        <div class="col-md-12" style="font-size: 1.2em; margin-top: 2em;">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#general" data-toggle="tab">G&eacute;n&eacute;ral</a></li>
+                @foreach (var season in Model.Seasons) {
+                    <li><a href="#saison-@season.Number" data-toggle="tab">Saison @season.Number</a></li>
+                }
+                @if (Request.IsAuthenticated) {
+                    <li><a href="@Url.Action("NewSeason", new { serieId = @Model.Id })"><span class="fa fa-plus fa-lg"></span></a></li>
+                }
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="general" style="padding: 2em 1em;">
+                <div class="col-md-12" style="font-size: 1.2em;">
+                    @if (!string.IsNullOrEmpty(Model.Genre)) { <strong>@Model.Genre</strong><span>, </span> }
+                    cr&eacute;&eacute;e par <strong>@Model.Creator</strong>
+                    contenant <strong>@Model.EpisodeCount</strong> &eacute;pisodes 
+                    @{
+                        var releaseDateText = string.Empty;
+                        if (!string.IsNullOrEmpty(Model.ReleaseDate)) {
+                            if (Model.ReleaseDate.EndsWith("???")) {
+                                releaseDateText = "en cours de diffusion depuis <strong>" + Model.ReleaseDate.Split(new char[] { '-' })[0] + "</strong>";
+                            } else {
+                                releaseDateText = "diffus&eacute;s en <strong>" + Model.ReleaseDate + "</strong>";
+                            }
+                        }}
+                    @Html.Raw(@releaseDateText)
+                </div>
+                <div class="col-md-12" style="margin-top: 1.4em;"><h4><small style="font-size: 1em;">Si vous avez manqu&eacute; le d&eacute;but</small></h4></div>
+                <div class="col-md-12"><p>@Model.Summary</p></div>
+                @if (!string.IsNullOrEmpty(Model.WikipediaLink)) {
+                    <div class="col-md-12" style="margin-top: 1em;"><a href="@Model.WikipediaLink"><i class="fa fa-external-link" style="margin-right: 0.4em;"></i>Wikipedia</a></div>
+                }
+                <hr />
+                <div class="col-md-12" style="margin-top: 2em;"><h4><small style="font-size: 1em;">Mon avis</small></h4></div>
+                <div class="col-md-12"><p>@Model.Review</p></div>
+                @if (!string.IsNullOrEmpty(Model.WatchingSessionForCharts)) {
+                    <div class="col-md-12" style="margin-top: 2em;"><h4><small style="font-size: 1em;">R&eacute;partition des sessions</small></h4></div>
+                    <div id="chartcontainer" class="col-md-12" style="height: 20em;"></div>
+                }
+            </div>
+
+            @foreach (var season in Model.Seasons) {
+                <div class="tab-pane" id="saison-@season.Number" style="padding: 2em 1em;">
+                    <div class="col-md-8">
+                        <div class="col-md-12" style="font-size: 1.2em;">
+                            contenant <strong>@season.Episodes.Count</strong> &eacute;pisodes diffus&eacute;s en <strong>@season.ReleaseDate</strong>
+                            @if (Request.IsAuthenticated) {
+                                <a href="@Url.Action("EditSeason", new { serieId = @Model.Id, seasonId = @season.Id })" class="btn btn-default" style="margin-left: 1em;"><span class="fa fa-edit fa-lg"></span></a>
+                            }
+                        </div>
+                        <table class="table table-condensed" style="margin-top: 1.8em;">
+                            <thead>
+                                <tr>
+                                    <th style="display: none;"></th>
+                                    <th style="display: none;"></th>
+                                    <th style="display: none;"></th>
+                                    <th class="text-center">#</th>
+                                    <th>Titre</th>
+                                    <th>R&eacute;alisateur</th>
+                                    @if (Request.IsAuthenticated) { 
+                                        <th></th> 
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var episode in season.Episodes.OrderBy(x => x.Number)) {
+                                    <tr>
+                                        <td style="display:none;"><input id="e-@season.Id-@episode.Id-serieId" type="text" value="@Model.Id" /></td>
+                                        <td style="display:none;"><input id="e-@season.Id-@episode.Id-seasonId" type="text" value="@season.Id" /></td>
+                                        <td style="display:none;"><input id="e-@season.Id-@episode.Id-id" type="text" value="@episode.Id" /></td>
+                                        <td class="col-md-2"><input id="e-@season.Id-@episode.Id-number" type="text" class="form-control" value="@episode.Number" placeholder="#" /></td>
+                                        <td><input id="e-@season.Id-@episode.Id-title" type="text" class="form-control" value="@episode.Title" placeholder="Titre" /></td>
+                                        <td><input id="e-@season.Id-@episode.Id-director" type="text" class="form-control" value="@episode.Director" placeholder="Réalisateur" /></td>
+                                        @if (Request.IsAuthenticated) {
+                                            <td class="col-md-1 text-center"><button type="button" id="save-@season.Id-@episode.Id" class="btn btn-default save-episode"><span class="fa fa-save fa-lg"></span></button></td>
+                                        }
+                                    </tr>
+                                }
+                                @if (Request.IsAuthenticated) {
+                                <tr id="new-@season.Id-row">
+                                    <td style="display:none;"><input id="e-@season.Id-new-serieId" type="text" value="@Model.Id" /></td>
+                                    <td style="display:none;"><input id="e-@season.Id-new-seasonId" type="text" value="@season.Id" /></td>
+                                    <td style="display:none;"><input id="e-@season.Id-new-id" type="text" value="0" /></td>
+                                    <td class="col-md-2"><input id="e-@season.Id-new-number" type="text" class="form-control" value="" placeholder="#" /></td>
+                                    <td><input id="e-@season.Id-new-title" type="text" class="form-control" value="" placeholder="Titre" /></td>
+                                    <td><input id="e-@season.Id-new-director" type="text" class="form-control" value="" placeholder="Réalisateur" /></td>
+                                    <td class="col-md-1 text-center"><button type="button" id="save-@season.Id-new" class="btn btn-default save-episode"><span class="fa fa-save fa-lg"></span></button></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4 text-right" style="margin-left: -0.8em;">
+                        @{ var imageUrl = string.IsNullOrEmpty(season.PosterFileName)
+                                    ? "/Content/images/no_cover.jpg"
+                                    : "/Content/images/tvSeries/" + @season.PosterFileName; }
+                        <a class="fancybox" rel="group" href="@imageUrl">
+                            <img src="@imageUrl" alt="@Model.Title - Saison @season.Number (couverture)" style="width: 100%;" />
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script>
+    function saveEpisode(seasonAndEpisodeId) {
+        var prefix = '#e-' + seasonAndEpisodeId + '-';
+
+        var episode = {};
+        episode.TvSerieId = $(prefix + 'serieId').val();
+        episode.SeasonId  = $(prefix + 'seasonId').val();
+        episode.Id        = $(prefix + 'id').val();
+        episode.Number    = $(prefix + 'number').val();
+        episode.Title     = $(prefix + 'title').val();
+        episode.Director  = $(prefix + 'director').val();
+
+        var saveUrl = '@Url.Action("SaveOrUpdateEpisode", "TvSeries")';
+        $.ajax({
+            type: "POST",
+            url: saveUrl,
+            data: episode,
+            dataType: "json",
+
+            success: function (data) {
+                if (seasonAndEpisodeId == episode.SeasonId + '-new') {
+                    $(prefix + 'number').val('');
+                    $(prefix + 'title').val('');
+                    $(prefix + 'director').val('');
+
+                    if (data.Title == undefined) {
+                        data.Title = '';
+                    }
+
+                    if (data.Director == undefined) {
+                        data.Director = '';
+                    }
+
+                    var tdSerieId         = '<td style="display:none;"><input id="e-' + data.SeasonId + '-' + data.Id + '-serieId" type="text" value="@Model.Id" /></td>';
+                    var tdSeasonId        = '<td style="display:none;"><input id="e-' + data.SeasonId + '-' + data.Id + '-seasonId" type="text" value="' + data.SeasonId + '" /></td>';
+                    var tdEpisodeId       = '<td style="display:none;"><input id="e-' + data.SeasonId + '-' + data.Id + '-id" type="text" value="' + data.Id + '" /></td>';
+                    var tdEpisodeNb       = '<td class="col-md-2"><input id="e-' + data.SeasonId + '-' + data.Id + '-number" type="text" class="form-control" value="' + data.Number + '" placeholder="#" /></td>';
+                    var tdEpisodeTitle    = '<td><input id="e-' + data.SeasonId + '-' + data.Id + '-title" type="text" class="form-control" value="' + data.Title + '" placeholder="Titre" /></td>';
+                    var tdEpisodeDirector = '<td><input id="e-' + data.SeasonId + '-' + data.Id + '-director" type="text" class="form-control" value="' + data.Director + '" placeholder="Réalisateur" /></td>';
+                    var tdEpisodeSubmit   = '<td class="col-md-1 text-center"><button type="button" id="save-' + data.SeasonId + '-' + data.Id + '" class="btn btn-default save-episode"><span class="fa fa-save fa-lg"></span></button></td>';
+                    $('#new-' + data.SeasonId + '-row').before('<tr>' + tdSerieId + tdSeasonId + tdEpisodeId + tdEpisodeNb + tdEpisodeTitle + tdEpisodeDirector + tdEpisodeSubmit + '</tr>');
+                    $('#save-' + data.SeasonId + '-' + data.Id).click(function () { return saveEpisode(data.Id); });
+
+                    $('#e-' + data.SeasonId + '-new-number').focus();
+                }
+
+                $('#e-' + data.SeasonId + '-' + data.Id + '-number')
+                    .animate({ backgroundColor: "#AAFFCC" }, 'slow', function () { $(this).animate({ backgroundColor: "#FFFFFF" }, 'slow'); });
+                $('#e-' + data.SeasonId + '-' + data.Id + '-title')
+                    .animate({ backgroundColor: "#AAFFCC" }, 'slow', function () { $(this).animate({ backgroundColor: "#FFFFFF" }, 'slow'); });
+                $('#e-' + data.SeasonId + '-' + data.Id + '-director')
+                    .animate({ backgroundColor: "#AAFFCC" }, 'slow', function () { $(this).animate({ backgroundColor: "#FFFFFF" }, 'slow'); });
+            },
+        });
+
+        return false;
+    }
+
+    $(document).ready(function () {
+        $('.save-episode').click(function () {
+            return saveEpisode(this.id.replace('save-', ''));
+        });
+
+        var chartSessions = @Model.WatchingSessionForCharts;
+        if (chartSessions == '' || chartSessions == undefined) {
+            return;
+        }
+
+        var xTicks = @Model.WatchingSessionXAxisTicks;
+        var yTicks = @Model.WatchingSessionYAxisTicks;
+        var chartInterval = "@Model.ChartIntervalType";
+        var plot1 = $.jqplot('chartcontainer', chartSessions, {
+            animate: true,
+            axesDefaults: {
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+            },
+            axes: {
+                xaxis: {
+                    showLabel: false,
+                    ticks: xTicks,
+                    tickOptions: {
+                        formatter: function (format, val) {
+                            var startDate = new Date(@Model.FirstChartDate.Year, @Model.FirstChartDate.Month - 1, @Model.FirstChartDate.Day);
+                            var tickDate = new Date(startDate);
+                            if (chartInterval == "Daily") {
+                                tickDate.setDate(tickDate.getDate() + val);
+                            } else if (chartInterval == "Weekly") {
+                                tickDate.setDate(tickDate.getDate() + (val*7));
+                            } else if (chartInterval == "Monthly") {
+                                tickDate.setMonth(tickDate.getMonth() + val);
+                            }
+
+                            var dd = tickDate.getDate();
+                            var mm = tickDate.getMonth() + 1;
+                            var yyyy = tickDate.getFullYear();
+                            if (dd < 10) {
+                                dd = '0' + dd
+                            }
+
+                            if (mm < 10) {
+                                mm = '0' + mm
+                            }
+
+                            if (chartInterval == "Monthly") {
+                                return mm + "/" + yyyy;
+                            } else {
+                                if (val == 0) {
+                                    return dd + "/" + mm + "/" + yyyy;
+                                } else {
+                                    return dd  + "/" + mm;
+                                }
+                            }
+                        }
+                    },
+                },
+                yaxis: {
+                    showLabel: false,
+                    ticks: yTicks,
+                    tickOptions: {
+                        formatter: function (format, val) {
+                            if (val % 1 != 0) {
+                                return '';
+                            } else {
+                                return String(val);
+                            }
+                        }
+                    }
+                }
+            },
+            series: [{ color: '#5FAB78' }],
+        });
+    });
+</script>
+}

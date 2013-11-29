@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>@Html.Raw(ViewBag.Title)</title>
+        <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet"> -->
+        <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.1/cosmo/bootstrap.min.css" rel="stylesheet" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.2/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="/Content/css/typeahead.js-bootstrap.css" rel="stylesheet" />
+        <link href="/Content/css/jquery.fancybox.css" rel="stylesheet" />
+        <link href="/Content/css/jquery.fancybox-buttons.css" rel="stylesheet" />
+        <link href="/Content/css/jquery.jqplot.min.css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <nav class="navbar navbar-default" role="navigation">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-left">
+                            <li id="timeline-menu"><a href="@Url.Action("Index", "Timeline")"><span class="fa fa-calendar fa-lg" style="margin-right: 0.8em;"></span>Chronologie</a></li>
+                            <li id="tv-series-menu"><a href="@Url.Action("Index", "TvSeries")"><span class="fa fa-desktop fa-lg" style="margin-right: 0.8em;"></span>S&eacute;ries t&eacute;l&eacute;</a></li>
+                            <li id="books-menu"><a href="@Url.Action("Index", "Books")"><span class="fa fa-book fa-lg" style="margin-right: 0.8em;"></span>Livres</a></li>
+                            <li id="movies-menu"><a href="@Url.Action("Index", "Movies")"><span class="fa fa-film fa-lg" style="margin-right: 0.8em;"></span>Films</a></li>
+                            <li id="games-menu"><a href="@Url.Action("Index", "Games")"><span class="fa fa-gamepad fa-lg" style="margin-right: 0.8em;"></span>Jeux</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li id="about-menu"><a href="@Url.Action("Index", "About")"><span class="fa fa-question fa-lg"></span></a></li>
+                            @if (Request.IsAuthenticated) {
+                                <li><a href="@Url.Action("Logout", "Account")"><span class="fa fa-sign-out fa-lg"></span></a></li>
+                            } else {
+                                <li><a href="@Url.Action("Login", "Account")"><span class="fa fa-sign-in fa-lg"></span></a></li>
+                            }
+                        </ul>
+                    </div>
+                </nav>
+                <h1 class="text-center">Pop-culture <small>&amp; Divertissement</small></h1>
+            </div>
+
+            @RenderBody()
+            <footer style="margin-top: 3em;">
+                <hr style="margin: 0;"/>
+                <div class="row" style="padding: 0.6em 0.8em 2em 0.8em;">
+                    <div class="col-md-6"><small>Merci &agrave; <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://fontawesome.io/">FontAwesome</a>, <a href="http://www.asp.net/mvc/mvc4">ASP.NET MVC 4</a>, <a href="http://nhforge.org/">NHibernate</a>, <a href="www.jqplot.com">jqPlot</a> et <a href="http://fancyapps.com/fancybox/">fancyBox</a></small></div>
+                    <div class="col-md-6 text-right"><small>&copy;&nbsp;2013, <a href="mailto:laurent.perruche@gmail.com">Laurent Perruche-Joubert</a></small></div>
+                </div>
+            </footer>
+        </div>
+
+        <script src="https://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+        <script src="/Content/js/typeahead.min.js"></script>
+        <script src="/Content/js/jquery.color.min.js"></script>
+        <script src="/Content/js/jquery.fancybox.pack.js"></script>
+        <script src="/Content/js/jquery.fancybox-buttons.js"></script>
+        <script src="/Content/js/jquery.jqplot.min.js"></script>
+        <script src="/Content/js/jqplot.canvasAxisLabelRenderer.min.js"></script>
+        <script src="/Content/js/jqplot.canvasAxisTickRenderer.min.js"></script>
+        <script src="/Content/js/jqplot.canvasTextRenderer.min.js"></script>
+        <script>
+            function extractFileName(filePath) {
+                var index = filePath.lastIndexOf("/");
+                if (index == -1) {
+                    index = filePath.lastIndexOf("\\");
+                    if (index == -1) {
+                        return filePath;
+                    } else {
+                        return filePath.substr(index + 1);
+                    }
+                } else {
+                    return filePath.substr(index + 1);
+                }
+            };
+
+            var activeMenu = '@ViewBag.ActiveMenu';
+            $(document).ready(function () {
+                $(activeMenu).addClass('active');
+
+                $(".fancybox").fancybox({
+                    arrows: false,
+
+                    helpers: {
+                        title: { type: 'float' }
+                    },
+
+                    beforeShow: function () {
+                        var alt = this.element.find('img').attr('alt');
+                        this.inner.find('img').attr('alt', alt);
+                        this.title = alt;
+                    }
+                });
+            });
+        </script>
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

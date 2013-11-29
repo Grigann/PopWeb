@@ -1,0 +1,64 @@
+﻿@model System.Collections.Generic.List<Pop.Domain.Entities.Movie>
+
+@{
+    ViewBag.Title = "Pop-culture &amp; Divertissement";
+    ViewBag.ActiveMenu = "#movies-menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="margin: 0; padding: 0;">
+    <div class="col-md-10" style="margin: 0; padding: 0;">
+        <h2><span class="fa fa-film fa-lg" style="margin-right: 0.8em;"></span>Films</h2>
+    </div>
+</div>
+<hr />
+<table class="table table-hover" style="margin-top: -1em;">
+    <thead style="font-size: 1.4em;">
+        <tr>
+            <th style="padding: 0.6em 0 0.6em 0.4em;" />
+            <th style="padding: 0.6em 0 0.6em 0.4em;">Titre</th>
+            <th style="padding: 0.6em 0 0.6em 0.4em;">R&eacute;alisateur</th>
+            <th style="padding: 0.6em 0 0.6em 0.4em;">Date</th>
+        </tr>
+    </thead>
+    <tbody style="font-size: 1.2em;">
+        @foreach (var movie in Model) {
+            <tr style="cursor: pointer;">
+                <td class="text-center" style="padding: 0.4em inherit;">
+                    @{ var imageUrl = string.IsNullOrEmpty(movie.PosterFileName)
+                                ? "/Content/images/no_cover.jpg"
+                                : "/Content/images/movies/" + movie.PosterFileName; }
+                    <a class="fancybox" rel="group" href="@imageUrl">
+                        <img src="@imageUrl" alt="@movie.Title (couverture)" style="height: 3.6em;" />
+                    </a>
+                </td>
+                <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "Movies", new { id = movie.Id })';">@movie.Title</td>
+                <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "Movies", new { id = movie.Id })';">@movie.Director</td>
+                <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "Movies", new { id = movie.Id })';">@movie.ReleaseDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
+@if (Request.IsAuthenticated) {
+<form action="@Url.Action("New", "Movies")" method="get" style="margin: 0; padding: 0;">
+    <div class="row" style="margin: 0; padding: 0;">
+        <div class="col-md-12" style="margin: 0; padding: 0;">
+            <button class="btn btn-primary"><span class="fa fa-plus fa-lg" style="margin-right: 0.6em;"></span>Ajouter</button>
+        </div>
+    </div>
+</form>
+}
+
+<div class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" style="max-height: 100%; width: auto; height: auto;">
+            </div>
+        </div>
+    </div>
+</div>

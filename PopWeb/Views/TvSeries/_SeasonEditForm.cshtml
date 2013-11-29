@@ -1,0 +1,35 @@
+﻿@model Pop.Domain.Entities.TvSerieSeason
+
+<form id="main-form" action="/series/SaveOrUpdateSeason" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
+    @Html.TextBoxFor(model => model.TvSerieId, new { @style = "display: none;" })
+    @Html.TextBoxFor(model => model.Id, new { @style = "display: none;" })
+
+    <div id="group-title" class="form-group"> 
+        @Html.LabelFor(model => model.Number, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-2">
+            @Html.TextBoxFor(model => model.Number, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.Number).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-date" class="form-group"> 
+        @Html.LabelFor(model => model.ReleaseDate, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-3">
+            @Html.TextBoxFor(x => x.ReleaseDate, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.ReleaseDate).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-cover" class="form-group">
+        @Html.LabelFor(model => model.PosterFileName, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-3">
+            <input id="posterFile" name="posterFile" type="file" style="display: none;" />
+            @Html.TextBoxFor(x => x.PosterFileName, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.PosterFileName).ToHtmlString()), @readonly = "readonly", @autocomplete = "off", @tabindex = "-1" })
+        </div>
+        <div class="col-md-1" style="padding: 0; margin: 0 0 0 -1em; width: auto;">
+            <button type="button" class="btn btn-default form-control" onclick="$('#posterFile').click(); return false;"><span class="fa fa-folder-open-o fa-lg"></span></button>
+        </div>
+    </div>
+    <div class="row text-right">
+        <div class="col-md-6" style="margin-left: -2.6em;">
+            <button type="button" class="btn btn-default" onclick="window.history.back();"><span class="fa fa-times fa-lg"></span></button>
+            <button type="submit" class="btn btn-primary"><span class="fa fa-save fa-lg" style="margin-right: 0.6em;"></span>Enregistrer</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,64 @@
+﻿@model Pop.Domain.Entities.Movie
+
+<form id="main-form" action="/films/SaveOrUpdate" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
+    @Html.TextBoxFor(model => model.Id, new { @style = "display: none;" })
+
+    <div id="group-title" class="form-group"> 
+        @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.Title).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-genre" class="form-group"> 
+        @Html.LabelFor(model => model.Genre, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Genre, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.Genre).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-director" class="form-group"> 
+        @Html.LabelFor(model => model.Director, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Director, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.Director).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-date" class="form-group"> 
+        @Html.LabelFor(model => model.ReleaseDate, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-3">
+            @Html.TextBoxFor(x => x.ReleaseDate, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.ReleaseDate).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-cover" class="form-group">
+        @Html.LabelFor(model => model.PosterFileName, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-3">
+            <input id="posterFile" name="posterFile" type="file" style="display: none;" />
+            @Html.TextBoxFor(x => x.PosterFileName, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.PosterFileName).ToHtmlString()), @readonly = "readonly", @autocomplete = "off", @tabindex = "-1" })
+        </div>
+        <div class="col-md-1" style="padding: 0; margin: 0 0 0 -1em; width: auto;">
+            <button type="button" class="btn btn-default form-control" onclick="$('#posterFile').click(); return false;"><span class="fa fa-folder-open-o fa-lg"></span></button>
+        </div>
+    </div>
+    <div id="group-summary" class="form-group">
+        @Html.LabelFor(model => model.Summary, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Summary, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(x => x.Summary).ToHtmlString()), @rows = "4", @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-review" class="form-group">
+        @Html.LabelFor(model => model.Review, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Review, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.Review).ToHtmlString()), @rows = "4", @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-wikipedia" class="form-group"> 
+        @Html.LabelFor(model => model.WikipediaLink, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.WikipediaLink, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.WikipediaLink).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div class="row text-right">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-default" onclick="window.history.back();"><span class="fa fa-times fa-lg"></span></button>
+            <button type="submit" class="btn btn-primary"><span class="fa fa-save fa-lg" style="margin-right: 0.6em;"></span>Enregistrer</button>
+        </div>
+    </div>
+</form>

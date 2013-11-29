@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>@Html.Raw(ViewBag.Title)</title>
+        <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet"> -->
+        <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.1/cosmo/bootstrap.min.css" rel="stylesheet" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.2/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="Content/css/jquery.fancybox.css?v=2.1.5" rel="stylesheet" />
+        <link href="Content/css/jquery.fancybox-buttons.css?v=1.0.5" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="page-header" style="padding-bottom: 2em;">
+            <h1 class="text-center">Pop-culture  <small>&amp; Divertissement</small></h1>
+        </div>
+        <div class="container">
+            <div class="row" style="margin-top: 2em;">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <form id="main-form" action="/account/login" method="post" role="form" class="form-horizontal">
+                            <div id="group-login" class="form-group col-md-12" style="margin: 0 0 0.4em 0; padding: 0;">
+                                <label class="control-label" for="UserLogin" style="text-align: left;">Identifiant</label>
+                                <input autocomplete="off" class="form-control" id="userLogin" name="userLogin" placeholder="Identifiant" type="text" value="" />
+                            </div>
+                            <div id="group-password" class="form-group col-md-12" style="margin: 0 0 1.4em 0; padding: 0;">
+                                <label class="control-label" for="UserPassword" style="text-align: left;">Mot de passe</label>
+                                <input autocomplete="off" class="form-control" id="userPassword" name="userPassword" placeholder="Mot de passe" type="password" value="" />
+                            </div>
+                            <div class="col-md-12 text-right" style="padding: 0;">
+                                <button type="submit" class="btn btn-primary"><span class="fa fa-save fa-lg" style="margin-right: 0.6em;"></span>S'authentifier</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+        <script src="Content/js/jquery.fancybox.pack.js?v=2.1.5"></script>
+        <script src="Content/js/jquery.fancybox-buttons.js?v=1.0.5"></script>
+    </body>
+</html>

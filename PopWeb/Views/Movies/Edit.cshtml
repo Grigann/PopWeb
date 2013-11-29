@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Pop-culture &amp; Divertissement";
+    ViewBag.ActiveMenu = "#movies-menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2><span class="fa fa-film fa-lg" style="margin-right: 0.8em;"></span>Films <small> - Edition</small></h2>
+<hr />
+@Html.Partial("_EditForm")
+
+@section scripts {
+<script>
+    $(document).ready(function () {
+        $('#posterFile').change(function () {
+            $('#PosterFileName').val(extractFileName($('#posterFile').val()));
+            return true;
+        });
+    });
+</script>
+}

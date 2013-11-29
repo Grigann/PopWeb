@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Pop-culture &amp; Divertissement";
+    ViewBag.ActiveMenu = "#books-menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2><span class="fa fa-book fa-lg" style="margin-right: 0.8em;"></span>Livres <small> - Edition</small></h2>
+<hr />
+@Html.Partial("_EditForm")
+
+@section scripts {
+<script>
+    $(document).ready(function () {
+        $('#coverFile').change(function () {
+            $('#CoverFileName').val(extractFileName($('#coverFile').val()));
+            return true;
+        });
+    });
+</script>
+}

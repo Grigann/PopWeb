@@ -1,0 +1,553 @@
+﻿@model Pop.Web.ViewModels.TimelineDetails
+
+@{
+    ViewBag.Title = "Pop-culture & Divertissement";
+    ViewBag.ActiveMenu = "#timeline-menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2><span class="fa fa-calendar fa-lg" style="margin-right: 0.8em;"></span>Chronologie</h2>
+<hr />
+@if (Request.IsAuthenticated) {
+<div class="container">
+    <form role="form" class="form-inline">
+        <fieldset style="margin: 1em 0 0 0;">
+            <legend>Nouvelle entr&eacute;e<span id="show-entry-data" class="fa fa-plus fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return showEntryData();"></span><span id="hide-entry-data" class="fa fa-minus fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return hideEntryData();"></span></legend>
+            <div id="new-entry-data" style="display: none;">
+                <div class="row" style="margin: 0 0.4em;">
+                    <div class="alert alert-danger" style="display: none;"><span class="fa fa-times fa-lg" style="margin-right: 0.8em;"></span><strong>Diantre !</strong>&nbsp;Il semblerait qu'une erreur se soit produite durant l'enregistrement...</div>
+                    <div class="col-md-7">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="radio">
+                                    <label style="margin-right: 1.4em;" onclick="return showTvSerieData();">
+                                        <input type="radio" name="newTypes" id="newTypeTvSeries" value="tvSeries" style="margin-right: 0.4em;" checked>
+                                        S&eacute;rie t&eacute;l&eacute;
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label style="margin-right: 1.4em;" onclick="return showBookData();">
+                                        <input type="radio" name="newTypes" id="newTypeBook" value="book" style="margin-right: 0.4em;">
+                                        Livre
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label style="margin-right: 1.4em;" onclick="return showMovieData();">
+                                        <input type="radio" name="newTypes" id="newTypeMovie" value="movie" style="margin-right: 0.4em;">
+                                        Film
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label style="margin-right: 1.4em;" onclick="return showGameData();">
+                                        <input type="radio" name="newTypes" id="newTypeGame" value="game" style="margin-right: 0.4em;">
+                                        Jeu
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="group-date" class="form-group col-md-3" style="margin-top: 0.6em;"> 
+                        <label for="entry-date" class="sr-only control-label">Date</label>
+                        <input type="text" class="form-control datepicker" style="padding-left: 1em;" id="entry-date" placeholder="Date" onchange="return removeErrorIfNotEmpty( 'entry-date', 'group-date' );" autocomplete="off">
+                    </div>
+                </div>
+                <div id="tv-serie-data" class="row" style="margin: 0 0.2em;">
+                    <div id="group-tv-serie-title" class="form-group col-md-3">
+                        <label for="tv-serie-title" class="control-label">S&eacute;rie</label>
+                        <input type="text" class="form-control" id="tv-serie-title" placeholder="S&eacute;rie" onchange="return removeErrorIfNotEmpty( 'tv-serie-title', 'group-tv-serie-title' );">
+                    </div>
+                    <div id="group-tv-serie-season-nb" class="form-group col-md-2">
+                        <label for="tv-serie-season-nb" class="control-label">Saison n&ordm;</label>
+                        <input type="text" class="form-control" id="tv-serie-season-nb" placeholder="Saison n&ordm;" onchange="return removeErrorIfNotEmpty( 'tv-serie-season-nb', 'group-tv-serie-season-nb' );">
+                    </div>
+                    <div id="group-tv-serie-episode-nb" class="form-group col-md-2">
+                        <label for="tv-serie-episode-nb" class="control-label">&Eacute;pisode n&ordm;</label>
+                        <input type="text" class="form-control" id="tv-serie-episode-nb" placeholder="&Eacute;pisode n&ordm;" onchange="return removeErrorIfNotEmpty( 'tv-serie-episode-nb', 'group-tv-serie-episode-nb' );">
+                    </div>
+                    <div id="group-tv-serie-episode-title" class="form-group col-md-4">
+                        <label for="tv-serie-episode-title" class="control-label">Titre de l'&eacute;pisode</label>
+                        <input type="text" class="form-control" id="tv-serie-episode-title" placeholder="Titre de l'&eacute;pisode" onchange="return removeErrorIfNotEmpty( 'tv-serie-episode-title', 'group-tv-serie-episode-title' );">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-primary" onclick="return saveTvSerie();" style="margin-top: 1.8em;"><span class="fa fa-save fa-lg"></span></button>
+                    </div>
+                </div>
+                <div id="book-data" class="row" style="display: none; margin: 0 0.2em;">
+                    <div id="group-book-title" class="form-group col-md-8">
+                        <label for="book-title" class="control-label">Titre</label>
+                        <input id="book-title" type="text" class="form-control" onchange="return removeErrorIfNotEmpty( 'book-title', 'group-book-title' );" placeholder="Titre" />
+                    </div>
+                    <div id="group-book-writer" class="form-group col-md-4">
+                        <label for="book-writer" class="control-label">Auteur</label>
+                        <input type="text" class="form-control" id="book-writer" placeholder="Auteur" onchange="return removeErrorIfNotEmpty( 'book-writer', 'group-book-writer' );">
+                    </div>
+                    <div id="group-book-note" class="form-group col-md-11" style="margin-top: 0.8em;">
+                        <label for="book-note" class="control-label">Note</label>
+                        <input type="text" class="form-control" id="book-note" placeholder="Note" onchange="return removeErrorIfNotEmpty( 'book-note', 'group-book-note' );">
+                    </div>
+                    <div class="col-md-1 text-right" style="margin-top: 0.8em;">
+                        <button type="button" class="btn btn-primary" onclick="return saveBook();" style="margin-top: 1.8em;"><span class="fa fa-save fa-lg"></span></button>
+                    </div>
+                </div>
+                <div id="movie-data" class="row" style="display: none; margin: 0 0.2em;">
+                    <div id="group-movie-title" class="form-group col-md-7">
+                        <label for="movie-title" class="control-label">Titre</label>
+                        <input type="text" class="form-control" id="movie-title" placeholder="Titre" onchange="return removeErrorIfNotEmpty( 'movie-title', 'group-movie-title' );">
+                    </div>
+                    <div id="group-movie-director" class="form-group col-md-4">
+                        <label for="movie-director" class="control-label">R&eacute;alisateur</label>
+                        <input type="text" class="form-control" id="movie-director" placeholder="R&eacute;alisateur" onchange="return removeErrorIfNotEmpty( 'movie-director', 'group-movie-director' );">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-primary" onclick="return saveMovie();" style="margin-top: 1.8em;"><span class="fa fa-save fa-lg"></span></button>
+                    </div>
+                </div>
+                <div id="game-data" class="row" style="display: none; margin: 0 0.2em;">
+                    <div id="group-game-title" class="form-group col-md-8">
+                        <label for="game-title" class="control-label">Titre</label>
+                        <input type="text" class="form-control" id="game-title" placeholder="Titre" onchange="return removeErrorIfNotEmpty( 'game-title', 'group-game-title' );">
+                    </div>
+                    <div id="group-game-developper" class="form-group col-md-4">
+                        <label for="game-developper" class="control-label">D&eacute;veloppeur</label>
+                        <input type="text" class="form-control" id="game-developper" placeholder="D&eacute;veloppeur"  onchange="return removeErrorIfNotEmpty( 'game-developper', 'group-game-developper' );">
+                    </div>
+                    <div id="group-game-note" class="form-group col-md-11" style="margin-top: 0.8em;">
+                        <label for="game-note" class="control-label">Note</label>
+                        <input type="text" class="form-control" id="game-note" placeholder="Note" onchange="return removeErrorIfNotEmpty( 'game-note', 'group-game-note' );">
+                    </div>
+                    <div class="col-md-1 text-right" style="margin-top: 0.8em;">
+                        <button type="button" class="btn btn-primary" onclick="return saveGame();" style="margin-top: 1.8em;"><span class="fa fa-save fa-lg"></span></button>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </fieldset>
+    </form>
+</div>
+}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title" style="font-size: 1.4em;">Hier et aujourd'hui<span id="show-today" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showToday();"></span><span id="hide-today" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideToday();"></span></h3>
+    </div>
+    <div id="today" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
+        @if (Model.Today.Count == 0) {
+            <div class="no-entry" style="margin: 1.4em 1.4em 0 0;"><em>Aucun contenu chronophage &agrave afficher<span class="fa fa-meh-o fa-lg" style="margin-left: 0.4em;"></span></em></div>
+        }
+        else {
+            foreach (var entry in Model.Today) {
+                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="width: 8em; margin: 1.4em 1.4em 0 0;" /></a>
+            }
+        }
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title" style="font-size: 1.4em;">Durant la derni&egrave;re semaine<span id="show-last-week" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastWeek();"></span><span id="hide-last-week" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastWeek();"></span></h3>
+    </div>
+    <div id="last-week" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
+        @if (Model.LastWeek.Count == 0) {
+            <div class="no-entry" style="margin: 1.4em 1.4em 0 0;"><em>Aucun contenu chronophage &agrave afficher<span class="fa fa-meh-o fa-lg" style="margin-left: 0.4em;"></span></em></div>
+        }
+        else {
+            foreach (var entry in Model.LastWeek) {
+                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="width: 8em; margin: 1.4em 1.4em 0 0;" /></a>
+            }
+        }
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title" style="font-size: 1.4em;">Durant le dernier mois<span id="show-last-month" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return showLastMonth();"></span><span id="hide-last-month" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return hideLastMonth();"></span></h3>
+    </div>
+    <div id="last-month" class="panel-body" style="margin: -1.4em -1.4em 0 0; display: none;">
+        @if (Model.LastMonth.Count == 0) {
+            <div class="no-entry" style="margin: 1.4em 1.4em 0 0;"><em>Aucun contenu chronophage &agrave afficher<span class="fa fa-meh-o fa-lg" style="margin-left: 0.4em;"></span></em></div>
+        }
+        else {
+            foreach (var entry in Model.LastMonth) {
+                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="width: 8em; margin: 1.4em 1.4em 0 0;" /></a>
+            }
+        }
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title" style="font-size: 1.4em;">Durant la derni&egrave;re ann&eacute;e<span id="show-last-year" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return showLastYear();"></span><span id="hide-last-year" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return hideLastYear();"></span></h3>
+    </div>
+    <div id="last-year" class="panel-body" style="margin: -1.4em -1.4em 0 0; display: none;">
+        @if (Model.LastYear.Count == 0) {
+            <div  class="no-entry" style="margin: 1.4em 1.4em 0 0;"><em>Aucun contenu chronophage &agrave afficher<span class="fa fa-meh-o fa-lg" style="margin-left: 0.4em;"></span></em></div>
+        }
+        else {
+            foreach (var entry in Model.LastYear) {
+                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="width: 8em; margin: 1.4em 1.4em 0 0;" /></a>
+            }
+        }
+    </div>
+</div>
+
+@section scripts {
+        <script>
+function removeErrorIfNotEmpty( control, group ) {
+    var value = $( '#' + control ).val();
+    if ( value != undefined && value != '' ) {
+        $( '#' + group ).removeClass( 'has-error' );
+    }
+
+    return false;
+}
+
+function cleanAllData() {
+    $('#tv-serie-title').val('');
+    $('#tv-serie-season-nb').val('');
+    $('#tv-serie-episode-nb').val('');
+    $('#tv-serie-episode-title').val('');
+    $('#book-title').val('');
+    $('#book-writer').val('');
+    $('#book-note').val('');
+    $('#movie-title').val('');
+    $('#movie-director').val('');
+    $('#game-title').val('');
+    $('#game-developper').val('');
+    $('#game-note').val('');
+};
+
+function saveTvSerie() {
+    var isEntryOk = true;
+
+    var episodeEntry = {};
+    episodeEntry.EntryDate = $('#entry-date').val();
+    if (episodeEntry.EntryDate == '') {
+        $( '#group-date' ).addClass( 'has-error' );
+        isEntryOk = false;
+    } 
+
+    episodeEntry.Title = $('#tv-serie-title').val();
+    if (episodeEntry.Title == '') {
+        $( '#group-tv-serie-title' ).addClass( 'has-error' );
+        isEntryOk = false;
+    }
+
+    episodeEntry.SeasonNb = $('#tv-serie-season-nb').val();
+    if (episodeEntry.SeasonNb == '') {
+        $( '#group-tv-serie-season-nb' ).addClass( 'has-error' );
+        isEntryOk = false;
+    }
+
+    episodeEntry.EpisodeNb = $( '#tv-serie-episode-nb' ).val();
+    if (episodeEntry.EpisodeNb == '') {
+        $( '#group-tv-serie-episode-nb' ).addClass( 'has-error' );
+        isEntryOk = false;
+    }
+
+    episodeEntry.EpisodeTitle = $('#tv-serie-episode-title').val();
+
+    if ( !isEntryOk ) {
+        return false;
+    }
+
+    var quickSaveUrl = '@Url.Action("QuickSave", "TvSeries")';
+    var hasBeenSaved = false;
+    $.ajax({
+        type: "POST",
+        url: quickSaveUrl,
+        data: episodeEntry,
+        dataType: "json",
+
+        success: function (timelineEntry) {
+            if (timelineEntry.Timeline != undefined && timelineEntry.Timeline != '') {
+                var delay = 1000;
+                $('.alert-danger').hide();
+                $('#' + timelineEntry.Timeline + ' .no-entry').hide();
+                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="width: 0; margin: 1.4em 1.4em 0 0;" />')
+                        .prependTo('#' + timelineEntry.Timeline)
+                        .animate({ width: '8em' }, delay)
+                        .wrap('<a href="' + timelineEntry.ViewUrl + '"></a>')
+                        .popover({ html: true, trigger: 'hover', placement: 'auto top' });
+            }
+
+            cleanAllData();
+            $('#tv-serie-title').focus();
+        },
+
+        error: function (xhr, status, error) {
+            $('.alert-danger').fadeIn('slow').delay(3000).fadeOut('slow');
+        }
+    });
+
+    return false;
+};
+
+function saveBook() {
+    var bookEntry = {};
+
+    var isEntryOk = true;
+    bookEntry.EntryDate = $('#entry-date').val();
+    if (bookEntry.EntryDate == '') {
+        $( '#group-date' ).addClass( 'has-error' );
+        isEntryOk = false;
+    } 
+
+    bookEntry.Title = $( '#book-title' ).val();
+    if (bookEntry.Title == '') {
+        $( '#group-book-title' ).addClass( 'has-error' );
+        isEntryOk = false;
+    }
+
+    bookEntry.Writer = $( '#book-writer' ).val();
+    bookEntry.Note = $('#book-note').val();
+
+    if ( !isEntryOk ) {
+        return false;
+    }
+    
+    var quickSaveUrl = '@Url.Action("QuickSave", "Books")';
+    var hasBeenSaved = false;
+    $.ajax({
+        type: "POST",
+        url: quickSaveUrl,
+        data: bookEntry,
+        dataType: "json",
+
+        success: function (timelineEntry) {
+            if (timelineEntry.Timeline != undefined && timelineEntry.Timeline != '') {
+                var delay = 1000;
+                $('.alert-danger').hide();
+                $('#' + timelineEntry.Timeline + ' .no-entry').hide();
+                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="width: 0; margin: 1.4em 1.4em 0 0;" />')
+                        .prependTo('#' + timelineEntry.Timeline)
+                        .animate({ width: '8em' }, delay)
+                        .wrap('<a href="' + timelineEntry.ViewUrl + '"></a>')
+                        .popover({ html: true, trigger: 'hover', placement: 'auto top' });
+            }
+
+            cleanAllData();
+            $('#book-title').focus();
+        },
+
+        error: function (xhr, status, error) {
+            $('.alert-danger').fadeIn('slow').delay(3000).fadeOut('slow');
+        }
+    });
+
+    return false;
+};
+
+function saveMovie() {
+    var movieEntry = {};
+
+    var isEntryOk = true;
+    movieEntry.EntryDate = $( '#entry-date' ).val();
+    if (movieEntry.EntryDate == '') {
+        $( '#group-date' ).addClass( 'has-error' );
+        isEntryOk = false;
+    } 
+
+    movieEntry.Title = $( '#movie-title' ).val();
+    if (movieEntry.Title == '') {
+        $( '#group-movie-title' ).addClass( 'has-error' );
+        isEntryOk = false;
+    }
+
+    movieEntry.Director = $( '#movie-director' ).val();
+
+    if ( !isEntryOk ) {
+        return false;
+    }
+
+    var quickSaveUrl = '@Url.Action("QuickSave", "Movies")';
+    var hasBeenSaved = false;
+    $.ajax({
+        type: "POST",
+        url: quickSaveUrl,
+        data: movieEntry,
+        dataType: "json",
+
+        success: function (timelineEntry) {
+            if (timelineEntry.Timeline != undefined && timelineEntry.Timeline != '') {
+                var delay = 1000;
+                $('.alert-danger').hide();
+                $('#' + timelineEntry.Timeline + ' .no-entry').hide();
+                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="width: 0; margin: 1.4em 1.4em 0 0;" />')
+                        .prependTo('#' + timelineEntry.Timeline)
+                        .animate({ width: '8em' }, delay)
+                        .wrap('<a href="' + timelineEntry.ViewUrl + '"></a>')
+                        .popover({ html: true, trigger: 'hover', placement: 'auto top' });
+            }
+
+            cleanAllData();
+            $('#movie-title').focus();
+        },
+
+        error: function (xhr, status, error) {
+            $('.alert-danger').fadeIn('slow').delay(3000).fadeOut('slow');
+        }
+    });
+
+    return false;
+};
+
+function saveGame() {
+    var isEntryOk = true;
+
+    var gameEntry = {};
+    gameEntry.EntryDate = $( '#entry-date' ).val();
+    if (gameEntry.EntryDate == '') {
+        $( '#group-date' ).addClass( 'has-error' );
+        isEntryOk = false;
+    } 
+
+    gameEntry.Title = $( '#game-title' ).val();
+    if (gameEntry.Title == '') {
+        $( '#group-game-title' ).addClass( 'has-error' );
+        isEntryOk = false;
+    }
+
+    gameEntry.Developper = $( '#game-developper' ).val();
+    gameEntry.Note = $('#game-note').val();
+
+    if ( !isEntryOk ) {
+        return false;
+    }
+
+    var quickSaveUrl = '@Url.Action("QuickSave", "Games")';
+    var hasBeenSaved = false;
+    $.ajax({
+        type: "POST",
+        url: quickSaveUrl,
+        data: gameEntry,
+        dataType: "json",
+
+        success: function (timelineEntry) {
+            if (timelineEntry.Timeline != undefined && timelineEntry.Timeline != '') {
+                var delay = 1000;
+                $('.alert-danger').hide();
+                $('#' + timelineEntry.Timeline + ' .no-entry').hide();
+                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="width: 0; margin: 1.4em 1.4em 0 0;" />')
+                        .prependTo('#' + timelineEntry.Timeline)
+                        .animate({ width: '8em' }, delay)
+                        .wrap('<a href="' + timelineEntry.ViewUrl + '"></a>')
+                        .popover({ html: true, trigger: 'hover', placement: 'auto top' });
+            }
+
+            cleanAllData();
+            $('#game-title').focus();
+        },
+
+        error: function (xhr, status, error) {
+            $('.alert-danger').fadeIn('slow').delay(3000).fadeOut('slow');
+        }
+    });
+
+    return false;
+};
+
+function showEntryData() {
+    $('#show-entry-data').hide();
+    $('#hide-entry-data').show();
+    $('.alert-success').hide();
+    $('#new-entry-data').slideDown();
+    return false;
+};
+
+function hideEntryData(endMethod, endDelay) {
+    $('#hide-entry-data').hide();
+    $('#show-entry-data').show();
+    $('#new-entry-data').slideUp(complete = function () {
+        if (endMethod != undefined) {
+            endDelay = typeof endDelay !== 'undefined' ? endDelay : 200;
+            window.setTimeout(function () { endMethod(); }, endDelay);
+        }
+    });
+    return false;
+};
+
+function showTvSerieData() {
+    $( '#book-data' ).hide();
+    $( '#movie-data' ).hide();
+    $( '#game-data' ).hide();
+    $( '#tv-serie-data' ).show();
+
+    $( '#tv-serie-title' ).focus();
+
+    return true;
+};
+
+function showBookData() {
+    $( '#tv-serie-data' ).hide();
+    $( '#movie-data' ).hide();
+    $( '#game-data' ).hide();
+    $( '#book-data' ).show();
+
+    $( '#book-title' ).focus();
+
+    return true;
+};
+
+function showMovieData() {
+    $( '#tv-serie-data' ).hide();
+    $( '#book-data' ).hide();
+    $( '#game-data' ).hide();
+    $( '#movie-data' ).show();
+
+    $( '#movie-title' ).focus();
+
+    return true;
+};
+
+function showGameData() {
+    $( '#tv-serie-data' ).hide();
+    $( '#book-data' ).hide();
+    $( '#movie-data' ).hide();
+    $( '#game-data' ).show();
+
+    $( '#game-title' ).focus();
+
+    return true;
+};
+
+function showTimeline(downArrow, upArrow, panel) {
+    $(downArrow).hide();
+    $(upArrow).show();
+    $(panel).slideDown();
+    return false;
+}
+
+function hideTimeline(downArrow, upArrow, panel) {
+    $(upArrow).hide();
+    $(downArrow).show();
+    $(panel).slideUp();
+    return false;
+}
+
+function showToday() { showTimeline('#show-today', '#hide-today', '#today'); return false; };
+function hideToday() { hideTimeline('#show-today', '#hide-today', '#today'); return false; };
+function showLastWeek() { showTimeline('#show-last-week', '#hide-last-week', '#last-week'); return false; };
+function hideLastWeek() { hideTimeline('#show-last-week', '#hide-last-week', '#last-week'); return false; };
+function showLastMonth() { showTimeline('#show-last-month', '#hide-last-month', '#last-month'); return false; };
+function hideLastMonth() { hideTimeline('#show-last-month', '#hide-last-month', '#last-month'); return false; };
+function showLastYear() { showTimeline('#show-last-year', '#hide-last-year', '#last-year'); return false; };
+function hideLastYear() { hideTimeline('#show-last-year', '#hide-last-year', '#last-year'); return false; };
+
+$(document).ready(function () {
+    $('#tv-serie-title').typeahead({ local: [@Html.Raw(ViewBag.SeriesTitles)] });
+    $('#book-title').typeahead({ local: [@Html.Raw(ViewBag.BooksTitles)] });
+    $('#movie-title').typeahead({ local: [@Html.Raw(ViewBag.MoviesTitles)] });
+    $('#game-title').typeahead({ local: [@Html.Raw(ViewBag.GamesTitles)] });
+
+    $('.timeline-entry').popover({ html: true, trigger: 'hover', placement: 'auto top' });
+    $('#newTypeTvSeries').prop('checked', true);
+
+    var d = new Date();
+    var month = d.getMonth() + 1;
+    var day = d.getDate();
+    var output = (day < 10 ? '0' : '') + day + '/' +
+                 (month < 10 ? '0' : '') + month + '/' +
+                 d.getFullYear();
+
+    $('#entry-date').val(output);
+
+    cleanAllData();
+} );
+        </script>
+}
