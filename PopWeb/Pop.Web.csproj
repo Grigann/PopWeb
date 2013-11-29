@@ -29,7 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -39,7 +39,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <ItemGroup>
@@ -263,8 +263,6 @@
   <ItemGroup>
     <Content Include="Content\less\datepicker.less" />
     <Content Include="Content\less\typeahead.js-bootstrap.less" />
-    <None Include="Properties\PublishProfiles\lpj - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\lpj - Web Deploy.pubxml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\TvSeries\_EditForm.cshtml" />
     <Content Include="Views\TvSeries\Edit.cshtml" />
@@ -275,6 +273,8 @@
     <Content Include="Views\TvSeries\NewSeason.cshtml" />
     <Content Include="Views\TvSeries\_SeasonEditForm.cshtml" />
     <Content Include="Views\TvSeries\EditSeason.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Properties\PublishProfiles\lpj-pop - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\lpj-pop - Web Deploy.pubxml" />
   </ItemGroup>
