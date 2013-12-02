@@ -20,6 +20,7 @@ namespace Pop.Web.Controllers {
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Login() {
+            TempData["referrerUrl"] = this.Request.UrlReferrer.ToString();
             return View();
         }
 
@@ -29,10 +30,14 @@ namespace Pop.Web.Controllers {
         /// <returns>An ActionResult</returns>
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(string userLogin, string userPassword) {
+        public ActionResult Login(string userLogin, string userPassword, string referrerUrl) {
             if (userLogin == "Laurent" && userPassword == "elrond") {
                 FormsAuthentication.SetAuthCookie(userLogin, false);
-                return RedirectToAction("Index", "Timeline");
+                if (string.IsNullOrEmpty(referrerUrl)) {
+                    return RedirectToAction("Index", "Timeline");
+                } else {
+                    return Redirect(referrerUrl);
+                }
             } else {
                 return RedirectToAction("Login");
             }

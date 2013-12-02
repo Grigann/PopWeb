@@ -31,6 +31,16 @@ namespace Pop.Web {
                 defaults: new { controller = "Errors", action = "Index" });
 
             routes.MapRoute(
+                name: "Login",
+                url: "login",
+                defaults: new { controller = "Account", action = "Login" });
+
+            routes.MapRoute(
+                name: "Logout",
+                url: "logout",
+                defaults: new { controller = "Account", action = "Logout" });
+
+            routes.MapRoute(
                 name: "About",
                 url: "a-propos/{action}/{id}",
                 defaults: new { controller = "About", action = "Index", id = UrlParameter.Optional });
