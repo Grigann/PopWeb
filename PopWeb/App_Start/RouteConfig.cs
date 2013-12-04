@@ -46,6 +46,16 @@ namespace Pop.Web {
                 defaults: new { controller = "About", action = "Index", id = UrlParameter.Optional });
 
             routes.MapRoute(
+                name: "GamesNewAchievement",
+                url: "jeux/{gameId}/succes/creation", 
+                defaults: new { controller = "Games", action = "NewAchievement", gameId = UrlParameter.Optional });
+
+            routes.MapRoute(
+                name: "GamesEditAchievement",
+                url: "jeux/{gameId}/succes/edition/{achievementId}",
+                defaults: new { controller = "Games", action = "EditAchievement", gameId = UrlParameter.Optional, achievementId = UrlParameter.Optional });
+
+            routes.MapRoute(
                 name: "GamesNew",
                 url: "jeux/creation",
                 defaults: new { controller = "Games", action = "New" });

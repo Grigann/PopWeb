@@ -17,6 +17,7 @@ namespace Pop.Domain.Entities {
         /// Initializes a new instance of the <see cref="Game"/> class.
         /// </summary>
         public Game() {
+            this.Achievements = new List<GameAchievement>();
             this.GamingSessions = new List<GamingSession>();
         }
 
@@ -80,25 +81,67 @@ namespace Pop.Domain.Entities {
         public virtual string WikipediaLink { get; set; }
 
         /// <summary>
+        /// Gets or sets the list of achievements
+        /// </summary>
+        public virtual IList<GameAchievement> Achievements { get; protected set; }
+
+        /// <summary>
         /// Gets the list of gaming sessions
         /// </summary>
         public virtual IList<GamingSession> GamingSessions { get; protected set; }
 
         /// <summary>
-        /// Gets the list of marked sessions (with a Note)
+        /// Gets the total of gamerpoints available for this game
         /// </summary>
-        public virtual IList<GamingSession> MarkedSessions {
+        public virtual int TotalGamerpoints {
             get {
-                return this.GamingSessions.Where(x => !string.IsNullOrEmpty(x.Note)).ToList();
+                if (this.Achievements.Count == 0) {
+                    return 0;
+                } else {
+                    return this.Achievements.Select(x => x.Gamerpoints).Aggregate((total, single) => total += single);
+                }
             }
         }
 
         /// <summary>
-        /// Gets the frequency of the sessions
+        /// Gets the total of actual gamerpoints win for this game
         /// </summary>
-        public virtual SessionFrequency SessionFrequency {
+        public virtual int ActualGamerpoints {
             get {
-                return SessionFrequencyComputer<GamingSession>.Compute(this.GamingSessions);
+                var actualAchievements = this.Achievements.Where(x => x.WinDate.HasValue);
+                if (actualAchievements.Count() == 0) {
+                    return 0;
+                } else {
+                    return actualAchievements.Select(x => x.Gamerpoints).Aggregate((total, single) => total += single);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the list of multiplayer-only achievements
+        /// </summary>
+        public virtual IList<GameAchievement> MultiplayerAchievements {
+            get {
+                if (this.Achievements.Count == 0) {
+                    return new List<GameAchievement>();
+                } else {
+                    return this.Achievements.Where(x => x.IsMultiplayer).ToList();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of gamerpoints multiplayer only
+        /// </summary>
+        public virtual int MultiplayerGamerpoints {
+            get {
+                if (this.Achievements.Count == 0) {
+                    return 0;
+                } else {
+                    return this.MultiplayerAchievements
+                            .Select(x => x.Gamerpoints)
+                            .Aggregate((total, single) => total += single);
+                }
             }
         }
 
@@ -147,6 +190,15 @@ namespace Pop.Domain.Entities {
                         ? null
                         : new DateTime?(this.GamingSessions.Select(x => x.Date).Max());
             }
+        }
+
+        /// <summary>
+        /// Adds an achievement for this game
+        /// </summary>
+        /// <param name="achievement">An achievement to add</param>
+        public virtual void AddAchievement(GameAchievement achievement) {
+            achievement.Game = this;
+            this.Achievements.Add(achievement);
         }
 
         /// <summary>

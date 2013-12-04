@@ -65,6 +65,32 @@ namespace Pop.Web.Controllers {
         }
 
         /// <summary>
+        /// New achievement action
+        /// </summary>
+        /// <param name="gameId">A game id</param>
+        /// <returns>An ActionResult</returns>
+        public ActionResult NewAchievement(int gameId) {
+            using (var uow = new UnitOfWork(false)) {
+                var game = uow.Games.Find(gameId);
+                return View(new GameAchievement() { Game = game });
+            }
+        }
+
+        /// <summary>
+        /// Edit achievement action
+        /// </summary>
+        /// <param name="gameId">A game id</param>
+        /// <param name="achievementId">An achievement id</param>
+        /// <returns>An ActionResult</returns>
+        public ActionResult EditAchievement(int gameId, int achievementId) {
+            using (var uow = new UnitOfWork(false)) {
+                var game = uow.Games.Find(gameId);
+                var achievement = game.Achievements.Where(x => x.Id == achievementId).SingleOrDefault();
+                return View(achievement);
+            }
+        }
+
+        /// <summary>
         /// Creates or updates a game and redirect to the View action
         /// </summary>
         /// <param name="game">A new game to create</param>
@@ -103,6 +129,52 @@ namespace Pop.Web.Controllers {
             }
 
             return RedirectToAction("View", new { id = game.Id });
+        }
+
+        /// <summary>
+        /// Creates or updates a game achievement and redirect to the View action
+        /// </summary>
+        /// <param name="achievement">A new achievement to create</param>
+        /// <param name="imageFile">An uploaded file (can be null)</param>
+        /// <returns>An ActionResult</returns>
+        [HttpPost]
+        public ActionResult SaveOrUpdateAchievement(GameAchievement achievement, HttpPostedFileBase imageFile) {
+            if (!string.IsNullOrEmpty(achievement.ImageFileName)) {
+                achievement.ImageFileName = Path.GetFileName(achievement.ImageFileName);
+            }
+
+            if (imageFile != null && imageFile.ContentLength > 0) {
+                var fileName = Path.GetFileName(imageFile.FileName);
+                var directory = Server.MapPath("~/Content/images/games/achievements");
+                if (!Directory.Exists(directory)) {
+                    Directory.CreateDirectory(directory);
+                }
+
+                imageFile.SaveAs(Path.Combine(directory, fileName));
+            }
+
+            using (var uow = new UnitOfWork(true)) {
+                var game = uow.Games.Find(achievement.GameId);
+                if (achievement.Id != 0) {
+                    var oldAchievement = game.Achievements.Where(x => x.Id == achievement.Id).Single();
+                    oldAchievement.Name = achievement.Name;
+                    oldAchievement.Description = achievement.Description;
+                    oldAchievement.Gamerpoints = achievement.Gamerpoints;
+                    oldAchievement.IsMultiplayer = achievement.IsMultiplayer;
+                    oldAchievement.AssociatedDlc = achievement.AssociatedDlc;
+                    oldAchievement.ImageFileName = achievement.ImageFileName;
+                    oldAchievement.TALink = achievement.TALink;
+                    oldAchievement.X360AchievementsLink = achievement.X360AchievementsLink;
+                    oldAchievement.WinDate = achievement.WinDate;
+                } else {
+                    game.AddAchievement(achievement);
+                }
+
+                uow.Games.SaveOrUpdate(game);
+                uow.Commit();
+            }
+
+            return RedirectToAction("View", new { id = achievement.GameId });
         }
 
         /// <summary>

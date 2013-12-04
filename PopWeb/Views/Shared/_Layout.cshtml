@@ -5,12 +5,18 @@
         <meta name="viewport" content="width=device-width" />
         <title>@Html.Raw(ViewBag.Title)</title>
         <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet"> -->
-        <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.1/cosmo/bootstrap.min.css" rel="stylesheet" />
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.2/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.2/cosmo/bootstrap.min.css" rel="stylesheet" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" />
         <link href="/Content/css/typeahead.js-bootstrap.css" rel="stylesheet" />
         <link href="/Content/css/jquery.fancybox.css" rel="stylesheet" />
         <link href="/Content/css/jquery.fancybox-buttons.css" rel="stylesheet" />
         <link href="/Content/css/jquery.jqplot.min.css" rel="stylesheet" />
+        <style>
+            .bwWrapper {
+                position:relative;
+                display:block;
+            }
+        </style>
     </head>
 
     <body>
@@ -64,6 +70,7 @@
         <script src="/Content/js/jqplot.canvasAxisLabelRenderer.min.js"></script>
         <script src="/Content/js/jqplot.canvasAxisTickRenderer.min.js"></script>
         <script src="/Content/js/jqplot.canvasTextRenderer.min.js"></script>
+        <script src="/Content/js/jQuery.BlackAndWhite.js"></script>
         <script>
             function extractFileName(filePath) {
                 var index = filePath.lastIndexOf("/");
@@ -80,16 +87,24 @@
             };
 
             var activeMenu = '@ViewBag.ActiveMenu';
+
+            $(window).load(function () {
+                $('.bwWrapper').BlackAndWhite({
+                    hoverEffect: false, // default true
+                    webworkerPath: false,
+                    responsive: true,
+                    speed: { fadeIn: 0, fadeOut: 0 }
+                });
+            });
+
             $(document).ready(function () {
                 $(activeMenu).addClass('active');
 
                 $(".fancybox").fancybox({
                     arrows: false,
-
                     helpers: {
                         title: { type: 'float' }
                     },
-
                     beforeShow: function () {
                         var alt = this.element.find('img').attr('alt');
                         this.inner.find('img').attr('alt', alt);

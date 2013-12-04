@@ -1,0 +1,72 @@
+﻿@model Pop.Domain.Entities.GameAchievement
+
+<form id="main-form" action="/jeux/SaveOrUpdateAchievement" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
+    @Html.TextBoxFor(model => model.Id, new { @style = "display: none;"})
+    @Html.TextBoxFor(model => model.GameId, new { @style = "display: none;" })
+
+    <div id="group-multiplayer" class="form-group">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2">
+            <label class="checkbox-inline">@Html.CheckBoxFor(model => model.IsMultiplayer) Multijoueur ?</label>
+        </div>
+    </div>
+    <div id="group-name" class="form-group"> 
+        @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.Name).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-description" class="form-group"> 
+        @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.Description).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-gamerpoints" class="form-group"> 
+        @Html.LabelFor(model => model.Gamerpoints, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-1">
+            @Html.TextBoxFor(model => model.Gamerpoints, new { @class = "form-control", @placeholder = "Pts", @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-dlc" class="form-group"> 
+        @Html.LabelFor(model => model.AssociatedDlc, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.AssociatedDlc, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.AssociatedDlc).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-image" class="form-group">
+        @Html.LabelFor(model => model.ImageFileName, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-3">
+            <input id="imageFile" name="imageFile" type="file" style="display: none;" />
+            @Html.TextBoxFor(x => x.ImageFileName, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.ImageFileName).ToHtmlString()), @readonly = "readonly", @autocomplete = "off", @tabindex = "-1" })
+        </div>
+        <div class="col-md-1" style="padding: 0; margin: 0 0 0 -1em; width: auto;">
+            <button type="button" class="btn btn-default form-control" onclick="$('#imageFile').click(); return false;"><span class="fa fa-folder-open-o fa-lg"></span></button>
+        </div>
+    </div>
+    <div id="group-ta" class="form-group"> 
+        @Html.LabelFor(model => model.TALink, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.TALink, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.TALink).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-x360a" class="form-group"> 
+        @Html.LabelFor(model => model.X360AchievementsLink, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.X360AchievementsLink, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.X360AchievementsLink).ToHtmlString()), @autocomplete = "off" })
+        </div>
+    </div>
+    <div id="group-windate" class="form-group"> 
+        @Html.LabelFor(model => model.WinDate, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        <div class="col-md-3">
+            @{ var winDateValue = Model.WinDate.HasValue ? Model.WinDate.Value.ToString("dd/MM/yyyy") : string.Empty; }
+            <input autocomplete="off" class="form-control" data-val="true" data-val-date="Le champ Date doit être une date." id="WinDate" name="WinDate" placeholder="@HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.WinDate).ToHtmlString())" type="text" value="@winDateValue" />
+        </div>
+    </div>
+    <div class="row text-right">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-default" onclick="window.history.back();"><span class="fa fa-times fa-lg"></span></button>
+            <button type="submit" class="btn btn-primary"><span class="fa fa-save fa-lg" style="margin-right: 0.6em;"></span>Enregistrer</button>
+        </div>
+    </div>
+</form>

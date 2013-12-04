@@ -172,6 +172,7 @@
     <Content Include="Content\js\jqplot.canvasAxisLabelRenderer.min.js" />
     <Content Include="Content\js\jqplot.canvasAxisTickRenderer.min.js" />
     <Content Include="Content\js\jqplot.canvasTextRenderer.min.js" />
+    <Content Include="Content\js\jquery.BlackAndWhite.js" />
     <Content Include="Content\js\jquery.color.min.js" />
     <Content Include="Content\js\jquery.fancybox-buttons.js" />
     <Content Include="Content\js\jquery.fancybox.pack.js" />
@@ -193,7 +194,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\books\" />
-    <Folder Include="Content\images\games\" />
+    <Folder Include="Content\images\games\achievements\" />
     <Folder Include="Content\images\movies\" />
     <Folder Include="Content\images\tvSeries\" />
   </ItemGroup>
@@ -277,6 +278,9 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\lpj-pop - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\lpj-pop - Web Deploy.pubxml" />
+    <Content Include="Views\Games\_AchievementEditForm.cshtml" />
+    <Content Include="Views\Games\EditAchievement.cshtml" />
+    <Content Include="Views\Games\NewAchievement.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

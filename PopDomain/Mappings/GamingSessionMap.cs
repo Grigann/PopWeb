@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ReadingSessionMap.cs" company="Laurent Perruche-Joubert">
+// <copyright file="GamingSessionMap.cs" company="Laurent Perruche-Joubert">
 //     © 2013 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
