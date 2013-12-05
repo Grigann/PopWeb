@@ -10,13 +10,13 @@
 <hr />
 <div class="row">
     <div class="col-md-8">
-        <div class="col-md-12" style="margin: 1.6em 0 2em 0; line-height: 2.6em;">
-            <h3 style="display: inline;"><strong>@Model.Title</strong></h3>
+        <div class="col-md-12" style="margin: 1.6em 0 2em 0;">
             @if (Request.IsAuthenticated) {
-            <form role="form" action="@Url.Action("Edit", "Books", new { id = Model.Id })" method="get" style="display: inline; margin-left: 1.4em;">
-                <button type="submit" class="btn btn-default" style="margin-top: -0.6em;"><span class="fa fa-edit fa-lg"></span></button>
+            <form role="form" action="@Url.Action("Edit", "Books", new { id = Model.Id })" method="get" style="display: inline; margin-right: 1.2em;">
+                <button type="submit" class="btn-sm btn-default"><span class="fa fa-edit fa-lg"></span></button>
             </form>
             }
+            <h3 style="display: inline; vertical-align: bottom;"><strong>@Model.Title</strong></h3>
         </div>
         @if (!string.IsNullOrEmpty(Model.BookSeries)) {
             <div class="col-md-12">

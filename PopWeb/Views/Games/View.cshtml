@@ -67,110 +67,110 @@
         </a>
     </div>
 </div>
-@if (Model.TotalGamerpoints > 0) {
-@:  <div class="row">
-        <div class="col-md-1"><h3 style="display: inline;">Succ&egrave;s</h3></div>
+@if (Model.GamingPlatform == "Xbox Live Arcade" || Model.GamingPlatform == "Xbox 360") {
+    if (Model.TotalGamerpoints > 0) {
+@:      <div class="row">
+            <div class="col-md-1"><h3 style="display: inline;">Succ&egrave;s</h3></div>
         
-        var completion = (int)(((double)Model.ActualGamerpoints / (double)Model.TotalGamerpoints) * 100);
-        var completionLeft = 100 - completion;
-@:      <div class="col-md-11">
-    @:      <div class="progress" style="height: 2em;">
-            if (completion > 0) {
-@:              <div class="progress-bar progress-bar-success" role="progressbar" style="width: @completion%;"></div>
-            }
+            var completion = (int)(((double)Model.ActualGamerpoints / (double)Model.TotalGamerpoints) * 100);
+            var completionLeft = 100 - completion;
+@:          <div class="col-md-11">
+@:              <div class="progress" style="height: 2em;">
+                if (completion > 0) {
+@:                  <div class="progress-bar progress-bar-success" role="progressbar" style="width: @completion%;"></div>
+                }
         
-            if (completion < 100) {
-@:              <div class="progress-bar progress-bar-warning" role="progressbar" style="width: @completionLeft%;"></div>
-            }
+                if (completion < 100) {
+@:                  <div class="progress-bar progress-bar-warning" role="progressbar" style="width: @completionLeft%;"></div>
+                }
+@:              </div>
 @:          </div>
 @:      </div>
-@:  </div>
-@:  <div class="row">
-@:      <div class="col-md-12">
-            var multiplayerAchievementsNb = Model.MultiplayerAchievements.Count;
-            if (multiplayerAchievementsNb > 0) {
-@:              <strong>@Model.TotalGamerpoints</strong> points disponibles sont répartis dans @Model.Achievements.Count succ&egrave;s, 
-@:              dont @multiplayerAchievementsNb, soit @Model.MultiplayerGamerpoints points, ne peuvent être obtenus qu'en multijoueur.
-            } else {
-@:              <strong>@Model.TotalGamerpoints</strong> points disponibles sont répartis dans @Model.Achievements.Count succ&egrave;s.
-            }
+@:      <div class="row">
+@:          <div class="col-md-12">
+                var multiplayerAchievementsNb = Model.MultiplayerAchievements.Count;
+                if (multiplayerAchievementsNb > 0) {
+@:                  <strong>@Model.TotalGamerpoints</strong> points disponibles sont répartis dans @Model.Achievements.Count succ&egrave;s, 
+@:                  dont @multiplayerAchievementsNb, soit @Model.MultiplayerGamerpoints points, ne peuvent être obtenus qu'en multijoueur.
+                } else {
+@:                  <strong>@Model.TotalGamerpoints</strong> points disponibles sont répartis dans @Model.Achievements.Count succ&egrave;s.
+                }
 
-            var actualAchievementsNb = Model.Achievements.Where(x => x.WinDate.HasValue).Count();
-            if (actualAchievementsNb == 0) {
-@:              Aucun succ&egrave;s n'a &eacute;t&eacute; gagn&eacute;.
-            } else {
-@:              <strong>@Model.ActualGamerpoints</strong> points ont &eacute;t&eacute; amass&eacute;s en @actualAchievementsNb succ&egrave;s.
+                var actualAchievementsNb = Model.Achievements.Where(x => x.WinDate.HasValue).Count();
+                if (actualAchievementsNb == 0) {
+@:                  Aucun succ&egrave;s n'a &eacute;t&eacute; gagn&eacute;.
+                } else {
+@:                  <strong>@Model.ActualGamerpoints</strong> points ont &eacute;t&eacute; amass&eacute;s en @actualAchievementsNb succ&egrave;s.
+                }
+@:          </div>
+@:      </div>
+    } else {
+@:      <div class="row"><h3>Succ&egrave;s</h3></div>
+    }
+
+@:  <div class="row" style="margin-top: 1.6em;">
+@:      <div class="col-md-12">
+@:          <table class="table table-condensed">
+@:              <thead>
+@:                  <tr>
+@:                      <th></th>   <!-- Achievement image -->
+@:                      <th></th>   <!-- Multiplayer icon -->
+@:                      <th>Nom</th>
+@:                      <th>Description</th>
+@:                      <th class="text-center">Valeur</th>
+@:                      <th class="text-center">Obtenu le</th>
+                        if (Request.IsAuthenticated) { 
+@:                          <th></th> <!-- Edit command button -->
+                        }
+@:                  </tr>
+@:              </thead>
+@:              <tbody>
+                    string currentDlc = null;
+                    foreach (var achievement in Model.Achievements) {
+                        if (currentDlc != achievement.AssociatedDlc) {
+                            currentDlc = achievement.AssociatedDlc;
+                            var colspan = Request.IsAuthenticated ? 6 : 5;
+@:                              <tr><td colspan="@colspan"><h4>@currentDlc</h4></td></tr>
+                        }
+@:                      <tr>
+@:                          <td class="col-md-1 text-center" style="padding: 0.4em inherit;">
+                                var achievementImage = string.IsNullOrEmpty(achievement.ImageFileName)
+                                        ? "/Content/images/no_cover.jpg"
+                                        : "/Content/images/games/achievements/" + achievement.ImageFileName;
+                                var achievementWinDate = achievement.WinDate.HasValue ? achievement.WinDate.Value.ToString("dd/MM/yyyy") : "";
+                                var achievementImageWrapper = achievement.WinDate.HasValue ? "colorWrapper" : "bwWrapper";
+@:                              <div class="@achievementImageWrapper">
+@:                                  <img src="@achievementImage" alt="@achievement.Name (image)" class="grayed" style="height: 3em;" />
+@:                              </div>
+@:                          </td>
+@:                          <td class="col-md-1 text-center" style="vertical-align: middle;">
+                                if (achievement.IsMultiplayer) {
+@:                                  <span class="fa fa-users" style="color: #555;"></span>
+                                }
+@:                          </td>
+@:                          <td style="padding-right: 1em; vertical-align: middle;">@achievement.Name</td>
+@:                          <td style="vertical-align: middle;"><small>@achievement.Description</small></td>
+@:                          <td class="col-md-1 text-center" style="vertical-align: middle;">@achievement.Gamerpoints</td>
+@:                          <td class="col-md-1 text-center" style="vertical-align: middle;">@achievementWinDate</td>
+                            if (Request.IsAuthenticated) {
+@:                              <td class="col-md-1 text-center" style="vertical-align: middle;">
+@:                                  <form action="@Url.Action("EditAchievement", "Games", new { gameId = @Model.Id, achievementId = @achievement.Id })" method="get" style="margin: 0; padding: 0;">
+@:                                      <button class="btn-sm btn-default"><span class="fa fa-edit fa-lg"></span></button>
+@:                                  </form>
+@:                              </td>
+                            }
+@:                      </tr>
+                    }
+@:              </tbody>
+@:          </table>
+            if (Request.IsAuthenticated) {
+@:              <form action="@Url.Action("NewAchievement", "Games", new { gameId = @Model.Id })" method="get" style="margin: 0; padding: 0;">
+@:                  <button class="btn-sm btn-primary"><span class="fa fa-plus fa-lg" style="margin-right: 0.6em;"></span>Ajouter</button>
+@:              </form>
             }
 @:      </div>
 @:  </div>
-} else {
-@:  <div class="row"><h3>Succ&egrave;s</h3></div>
 }
-<div class="row" style="margin-top: 1.6em;">
-    <div class="col-md-12">
-        <table class="table table-condensed">
-            <thead>
-                <tr>
-                    <th></th>   <!-- Achievement image -->
-                    <th></th>   <!-- Multiplayer icon -->
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th class="text-center">Valeur</th>
-                    <th class="text-center">Obtenu le</th>
-                    @if (Request.IsAuthenticated) { 
-                        <th></th> <!-- Edit command button -->
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @{ string currentDlc = null; }
-                @foreach (var achievement in Model.Achievements) {
-                    if (currentDlc != achievement.AssociatedDlc) {
-                        currentDlc = achievement.AssociatedDlc;
-                        var colspan = Request.IsAuthenticated ? 6 : 5;
-                        @: <tr><td colspan="@colspan"><h4>@currentDlc</h4></td></tr>
-                    }
-                    
-                    <tr>
-                        <td class="col-md-1 text-center" style="padding: 0.4em inherit;">
-                            @{ 
-                    var achievementImage = string.IsNullOrEmpty(achievement.ImageFileName)
-                            ? "/Content/images/no_cover.jpg"
-                            : "/Content/images/games/achievements/" + achievement.ImageFileName;
-                    var achievementWinDate = achievement.WinDate.HasValue ? achievement.WinDate.Value.ToString("dd/MM/yyyy") : "";
-                    var achievementImageWrapper = achievement.WinDate.HasValue ? "colorWrapper" : "bwWrapper";
-                            }
-                            <div class="@achievementImageWrapper">
-                                <img src="@achievementImage" alt="@achievement.Name (image)" class="grayed" style="height: 3em;" />
-                            </div>
-                        </td>
-                        <td class="col-md-1 text-center" style="vertical-align: middle;">
-                            @if (achievement.IsMultiplayer) {
-                                @: <span class="fa fa-users" style="color: #555;"></span>
-                            }
-                        </td>
-                        <td style="padding-right: 1em; vertical-align: middle;">@achievement.Name</td>
-                        <td style="vertical-align: middle;"><small>@achievement.Description</small></td>
-                        <td class="col-md-1 text-center" style="vertical-align: middle;">@achievement.Gamerpoints</td>
-                        <td class="col-md-1 text-center" style="vertical-align: middle;">@achievementWinDate</td>
-                        @if (Request.IsAuthenticated) {
-                            <td class="col-md-1 text-center" style="vertical-align: middle;">
-                                <form action="@Url.Action("EditAchievement", "Games", new { gameId = @Model.Id, achievementId = @achievement.Id })" method="get" style="margin: 0; padding: 0;">
-                                    <button class="btn-sm btn-default"><span class="fa fa-edit fa-lg"></span></button>
-                                </form>
-                            </td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
-        @if (Request.IsAuthenticated) {
-        <form action="@Url.Action("NewAchievement", "Games", new { gameId = @Model.Id })" method="get" style="margin: 0; padding: 0;">
-            <button class="btn-sm btn-primary"><span class="fa fa-plus fa-lg" style="margin-right: 0.6em;"></span>Ajouter</button>
-        </form>
-        }
-    </div>
-</div>
 
 @section scripts {
     <script>
