@@ -20,9 +20,9 @@
         </div>
         <div class="col-md-12" style="font-size: 1.2em; margin-top: 2em;">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#general" data-toggle="tab">G&eacute;n&eacute;ral</a></li>
+                <li class="active"><a href="#general" data-toggle="tab" onclick="return false;">G&eacute;n&eacute;ral</a></li>
                 @foreach (var season in Model.Seasons) {
-                    <li><a href="#saison-@season.Number" data-toggle="tab">Saison @season.Number</a></li>
+                    <li><a href="#saison-@season.Number" data-toggle="tab" onclick="return false;">Saison @season.Number</a></li>
                 }
                 @if (Request.IsAuthenticated) {
                     <li><a href="@Url.Action("NewSeason", new { serieId = @Model.Id })"><span class="fa fa-plus fa-lg"></span></a></li>
@@ -56,7 +56,7 @@
                 <hr />
                 <div class="col-md-12" style="margin-top: 2em;"><h4><small style="font-size: 1em;">Mon avis</small></h4></div>
                 <div class="col-md-12"><p>@Model.Review</p></div>
-                @if (!string.IsNullOrEmpty(Model.WatchingSessionForCharts)) {
+                @if (Model.WatchingSessionForCharts != "[]") {
                     <div class="col-md-12" style="margin-top: 2em;"><h4><small style="font-size: 1em;">R&eacute;partition des sessions</small></h4></div>
                     <div id="chartcontainer" class="col-md-12" style="height: 20em;"></div>
                 }
@@ -258,6 +258,17 @@
                 }
             },
             series: [{ color: '#5FAB78' }],
+        });
+
+        var hash = document.location.hash;
+        var prefix = "tab_";
+        if (hash) {
+            $('.nav-tabs a[href='+hash.replace(prefix,"")+']').tab('show');
+        } 
+
+        // Change hash for page-reload
+        $('.nav-tabs a').on('shown', function (e) {
+            window.location.hash = e.target.hash.replace("#", "#" + prefix);
         });
     });
 </script>

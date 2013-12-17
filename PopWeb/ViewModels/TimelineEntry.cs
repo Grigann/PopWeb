@@ -162,7 +162,7 @@ namespace Pop.Web.ViewModels {
             var season = episode.Season;
             var serie = season.TvSerie;
 
-            this.ViewUrl = controller.Url.Action("View", "TvSeries", new { id = serie.Id });
+            this.ViewUrl = controller.Url.Action("View", "TvSeries", new { id = serie.Id }) + "#tab_saison-" + season.Number;
             this.Title = HttpUtility.HtmlEncode(serie.Title) + " - Saison " + season.Number;
             this.Details = "Ep. " + tvWatchingSession.Episode.Number + " - \"<em>" + HttpUtility.HtmlEncode(episode.Title) + "\"</em>";
             this.ImageUrl = string.IsNullOrEmpty(season.PosterFileName)
