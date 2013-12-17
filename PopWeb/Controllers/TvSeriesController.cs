@@ -130,8 +130,12 @@ namespace Pop.Web.Controllers {
 
             if (posterFile != null && posterFile.ContentLength > 0) {
                 var fileName = Path.GetFileName(posterFile.FileName);
-                var path = Path.Combine(Server.MapPath("~/Content/images/tvSeries"), fileName);
-                posterFile.SaveAs(path);
+                var directory = Server.MapPath("~/Content/images/tvSeries");
+                if (!Directory.Exists(directory)) {
+                    Directory.CreateDirectory(directory);
+                }
+
+                posterFile.SaveAs(Path.Combine(directory, fileName));
             }
 
             using (var uow = new UnitOfWork(true)) {

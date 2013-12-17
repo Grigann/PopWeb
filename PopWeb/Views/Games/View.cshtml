@@ -147,6 +147,13 @@
                                 if (achievement.IsMultiplayer) {
 @:                                  <span class="fa fa-users" style="color: #555;"></span>
                                 }
+                                if (!string.IsNullOrEmpty(achievement.TALink) && !achievement.WinDate.HasValue) {
+                                    if (achievement.IsMultiplayer) {
+@:                                      <a href="@achievement.TALink" style="margin-left: 0.2em;"><span class="fa fa-external-link"></span></a>
+                                    } else {
+@:                                      <a href="@achievement.TALink"><span class="fa fa-external-link"></span></a>
+                                    }
+                                }
 @:                          </td>
 @:                          <td style="padding-right: 1em; vertical-align: middle;">@achievement.Name</td>
 @:                          <td style="vertical-align: middle;"><small>@achievement.Description</small></td>

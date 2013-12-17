@@ -84,8 +84,12 @@ namespace Pop.Web.Controllers {
 
             if (coverFile != null && coverFile.ContentLength > 0) {
                 var fileName = Path.GetFileName(coverFile.FileName);
-                var path = Path.Combine(Server.MapPath("~/Content/images/books"), fileName);
-                coverFile.SaveAs(path);
+                var directory = Server.MapPath("~/Content/images/books");
+                if (!Directory.Exists(directory)) {
+                    Directory.CreateDirectory(directory);
+                }
+
+                coverFile.SaveAs(Path.Combine(directory, fileName));
             }
 
             using (var uow = new UnitOfWork(true)) {
