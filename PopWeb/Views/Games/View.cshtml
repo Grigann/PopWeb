@@ -55,7 +55,7 @@
         <div class="col-md-12"><p>@Model.Review</p></div>
         @if (Model.GamingSessionForCharts != "[]") {
             <div class="col-md-12" style="margin-top: 2em;"><h4><small style="font-size: 1em;">R&eacute;partition des sessions</small></h4></div>
-            <div id="chartcontainer" class="col-md-12" style="height: 20em; margin-bottom: 3em;"></div>
+            <div id="chartcontainer" class="col-md-12" style="height: 20em;"></div>
         }
     </div>
     <div class="col-md-4 text-right" style="margin-left: -0.8em;">
@@ -69,7 +69,7 @@
 </div>
 @if (Model.GamingPlatform == "Xbox Live Arcade" || Model.GamingPlatform == "Xbox 360") {
     if (Model.TotalGamerpoints > 0) {
-@:      <div class="row">
+@:      <div class="row" style="margin-top: 3em;">
             <div class="col-md-1"><h3 style="display: inline;">Succ&egrave;s</h3></div>
         
             var completion = (int)(((double)Model.ActualGamerpoints / (double)Model.TotalGamerpoints) * 100);
@@ -108,7 +108,7 @@
 @:      <div class="row"><h3>Succ&egrave;s</h3></div>
     }
 
-@:  <div class="row" style="margin-top: 1.6em;">
+@:  <div class="row" style="margin-top: 1em;">
 @:      <div class="col-md-12">
 @:          <table class="table table-condensed">
 @:              <thead>
