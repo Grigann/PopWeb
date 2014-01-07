@@ -24,15 +24,13 @@ namespace Pop.Web.Controllers {
         /// <returns>An ActionResult</returns>
         [AllowAnonymous]
         public ActionResult Index() {
-            var todayLimit = DateTime.Today.AddDays(-1);
+            var todayLimit = DateTime.Today.AddDays(-2);
             var lastWeekLimit = todayLimit.AddDays(-7);
-            var lastMonthLimit = lastWeekLimit.AddMonths(-1);
-            var lastYearLimit = lastMonthLimit.AddYears(-1);
+            var lastMonthLimit = lastWeekLimit.AddMonths(-3);
 
             var today = new List<IEntertainmentSession>();
             var lastWeek = new List<IEntertainmentSession>();
             var lastMonth = new List<IEntertainmentSession>();
-            var lastYear = new List<IEntertainmentSession>();
 
             string[] seriesTitles;
             string[] booksTitles;
@@ -45,14 +43,14 @@ namespace Pop.Web.Controllers {
                 moviesTitles = uow.Movies.All().OrderBy(x => x.Title).Select(x => x.Title).ToArray();
                 gamesTitles = uow.Games.All().OrderBy(x => x.Title).Select(x => x.Title).ToArray();
 
-                var readingSessions = uow.Books.All().SelectMany(x => x.ReadingSessions).Where(x => x.Date >= lastYearLimit);
-                var watchingSessions = uow.Movies.All().SelectMany(x => x.WatchingSessions).Where(x => x.Date >= lastYearLimit);
-                var gamingSessions = uow.Games.All().SelectMany(x => x.GamingSessions).Where(x => x.Date >= lastYearLimit);
+                var readingSessions = uow.Books.All().SelectMany(x => x.ReadingSessions).Where(x => x.Date >= lastMonthLimit);
+                var watchingSessions = uow.Movies.All().SelectMany(x => x.WatchingSessions).Where(x => x.Date >= lastMonthLimit);
+                var gamingSessions = uow.Games.All().SelectMany(x => x.GamingSessions).Where(x => x.Date >= lastMonthLimit);
                 var tvSessions = uow.TvSeries.All()
                         .SelectMany(x => x.Seasons)
                         .SelectMany(x => x.Episodes)
                         .SelectMany(x => x.WatchingSessions)
-                        .Where(x => x.Date >= lastYearLimit);
+                        .Where(x => x.Date >= lastMonthLimit);
 
                 today = today
                     .Concat(readingSessions
@@ -110,25 +108,6 @@ namespace Pop.Web.Controllers {
                         .GroupBy(x => x.Episode.Id)
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .ToList();
-
-                lastYear = lastYear
-                    .Concat(readingSessions
-                        .Where(x => x.Date >= lastYearLimit && x.Date < lastMonthLimit)
-                        .GroupBy(x => x.Book.Id)
-                        .Select(x => x.OrderBy(y => y.Date).Last()))
-                    .Concat(watchingSessions
-                        .Where(x => x.Date >= lastYearLimit && x.Date < lastMonthLimit)
-                        .GroupBy(x => x.Movie.Id)
-                        .Select(x => x.OrderBy(y => y.Date).Last()))
-                    .Concat(gamingSessions
-                        .Where(x => x.Date >= lastYearLimit && x.Date < lastMonthLimit)
-                        .GroupBy(x => x.Game.Id)
-                        .Select(x => x.OrderBy(y => y.Date).Last()))
-                    .Concat(tvSessions
-                        .Where(x => x.Date >= lastYearLimit && x.Date < lastMonthLimit)
-                        .GroupBy(x => x.Episode.Id)
-                        .Select(x => x.OrderBy(y => y.Date).Last()))
-                    .ToList();
             }
 
             var todayEntries = today
@@ -173,25 +152,10 @@ namespace Pop.Web.Controllers {
                             }))
                     .OrderByDescending(x => x.Date);
 
-            var lastYearEntries = lastYear
-                    .Where(x => x.GetType() != typeof(TvWatchingSession))
-                    .Select(x => new TimelineEntry(x, this))
-                    .Concat(lastYear
-                            .Where(x => x.GetType() == typeof(TvWatchingSession))
-                            .Select(x => new TimelineEntry(x, this))
-                            .GroupBy(x => x.Title)
-                            .Select(x => {
-                                var session = x.OrderBy(y => y.Date).Last();
-                                session.Details = x.Aggregate((final, current) => final.AddDetails(current.Details)).Details;
-                                return session;
-                            }))
-                    .OrderByDescending(x => x.Date);
-
             var timelineDetails = new TimelineDetails() {
                 Today = todayEntries.ToList(),
                 LastWeek = lastWeekEntries.ToList(),
-                LastMonth = lastMonthEntries.ToList(),
-                LastYear = lastYearEntries.ToList()
+                LastMonth = lastMonthEntries.ToList()
             };
 
             ViewBag.SeriesTitles = "'" + string.Join("', '", seriesTitles) + "'";

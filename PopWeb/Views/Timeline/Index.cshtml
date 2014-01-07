@@ -127,7 +127,7 @@
 }
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title" style="font-size: 1.4em;">Hier et aujourd'hui<span id="show-today" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showToday();"></span><span id="hide-today" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideToday();"></span></h3>
+        <h3 class="panel-title" style="font-size: 1.4em;">Hier et avant-hier<span id="show-today" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showToday();"></span><span id="hide-today" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideToday();"></span></h3>
     </div>
     <div id="today" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
         @if (Model.Today.Count == 0) {
@@ -157,29 +157,14 @@
 </div>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title" style="font-size: 1.4em;">Durant le dernier mois<span id="show-last-month" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return showLastMonth();"></span><span id="hide-last-month" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return hideLastMonth();"></span></h3>
+        <h3 class="panel-title" style="font-size: 1.4em;">Durant les trois derniers mois<span id="show-last-month" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastMonth();"></span><span id="hide-last-month" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastMonth();"></span></h3>
     </div>
-    <div id="last-month" class="panel-body" style="margin: -1.4em -1.4em 0 0; display: none;">
+    <div id="last-month" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
         @if (Model.LastMonth.Count == 0) {
             <div class="no-entry" style="margin: 1.4em 1.4em 0 0;"><em>Aucun contenu chronophage &agrave afficher<span class="fa fa-meh-o fa-lg" style="margin-left: 0.4em;"></span></em></div>
         }
         else {
             foreach (var entry in Model.LastMonth) {
-                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="width: 8em; margin: 1.4em 1.4em 0 0;" /></a>
-            }
-        }
-    </div>
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title" style="font-size: 1.4em;">Durant la derni&egrave;re ann&eacute;e<span id="show-last-year" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return showLastYear();"></span><span id="hide-last-year" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return hideLastYear();"></span></h3>
-    </div>
-    <div id="last-year" class="panel-body" style="margin: -1.4em -1.4em 0 0; display: none;">
-        @if (Model.LastYear.Count == 0) {
-            <div  class="no-entry" style="margin: 1.4em 1.4em 0 0;"><em>Aucun contenu chronophage &agrave afficher<span class="fa fa-meh-o fa-lg" style="margin-left: 0.4em;"></span></em></div>
-        }
-        else {
-            foreach (var entry in Model.LastYear) {
                 <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="width: 8em; margin: 1.4em 1.4em 0 0;" /></a>
             }
         }

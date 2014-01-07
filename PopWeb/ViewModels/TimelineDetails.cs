@@ -12,23 +12,18 @@ namespace Pop.Web.ViewModels {
     /// </summary>
     public class TimelineDetails {
         /// <summary>
-        /// Gets or sets the list of entries for today and yesterday
+        /// Gets or sets the list of entries for today and yesterday, and the day before
         /// </summary>
         public IList<TimelineEntry> Today { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of entries for the week before yesterday
+        /// Gets or sets the list of entries for the week before the day before yesterday
         /// </summary>
         public IList<TimelineEntry> LastWeek { get; set; }
 
         /// <summary>
-        /// Gets or setst the list of entries for the month before the last week
+        /// Gets or setst the list of entries for the three months before the last week
         /// </summary>
         public IList<TimelineEntry> LastMonth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of entries for the year before the last month
-        /// </summary>
-        public IList<TimelineEntry> LastYear { get; set; }
     }
 }
