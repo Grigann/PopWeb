@@ -55,12 +55,6 @@
             @Html.TextAreaFor(model => model.Summary, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(x => x.Summary).ToHtmlString()), @rows = "4", @autocomplete = "off" })
         </div>
     </div>
-    <div id="group-review" class="form-group">
-        @Html.LabelFor(model => model.Review, new { @class = "control-label col-md-2", @style = "text-align: left;" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Review, new { @class = "form-control", @placeholder = HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.Review).ToHtmlString()), @rows = "4", @autocomplete = "off" })
-        </div>
-    </div>
     <div id="group-wikipedia" class="form-group">
         @Html.LabelFor(model => model.WikipediaLink, new { @class = "control-label col-md-2", @style = "text-align: left;" })
         <div class="col-md-10">

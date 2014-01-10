@@ -94,7 +94,6 @@ namespace Pop.Web.Controllers {
                     oldMovie.ReleaseDate = movie.ReleaseDate;
                     oldMovie.PosterFileName = movie.PosterFileName;
                     oldMovie.Summary = movie.Summary;
-                    oldMovie.Review = movie.Review;
                     oldMovie.WikipediaLink = movie.WikipediaLink;
                     uow.Movies.SaveOrUpdate(oldMovie);
                 } else {

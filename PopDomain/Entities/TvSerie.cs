@@ -57,12 +57,6 @@ namespace Pop.Domain.Entities {
         public virtual string Summary { get; set; }
 
         /// <summary>
-        /// Gets or sets the review
-        /// </summary>
-        [DisplayName("Mon avis")]
-        public virtual string Review { get; set; }
-
-        /// <summary>
         /// Gets or sets the Wikipedia link
         /// </summary>
         [DisplayName("Lien Wikipedia")]

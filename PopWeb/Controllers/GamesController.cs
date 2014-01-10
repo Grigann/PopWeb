@@ -122,7 +122,6 @@ namespace Pop.Web.Controllers {
                     oldGame.ReleaseDate = game.ReleaseDate;
                     oldGame.CoverFileName = game.CoverFileName;
                     oldGame.Summary = game.Summary;
-                    oldGame.Review = game.Review;
                     oldGame.WikipediaLink = game.WikipediaLink;
                     uow.Games.SaveOrUpdate(oldGame);
                 } else {

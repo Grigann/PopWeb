@@ -27,6 +27,7 @@ namespace Pop.Domain {
             this.Games = new GameRepository(this.Session);
             this.Movies = new MovieRepository(this.Session);
             this.TvSeries = new TvSerieRepository(this.Session);
+            this.Users = new UserRepository(this.Session);
         }
 
         /// <summary>
@@ -48,6 +49,8 @@ namespace Pop.Domain {
         /// Gets the movies repository
         /// </summary>
         public TvSerieRepository TvSeries { get; private set; }
+
+        public UserRepository Users { get; private set; }
 
         /// <summary>
         /// Gets or sets the NHibernate session

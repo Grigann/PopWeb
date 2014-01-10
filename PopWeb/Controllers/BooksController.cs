@@ -103,7 +103,6 @@ namespace Pop.Web.Controllers {
                     oldBook.PublicationDate = book.PublicationDate;
                     oldBook.CoverFileName = book.CoverFileName;
                     oldBook.Summary = book.Summary;
-                    oldBook.Review = book.Review;
                     oldBook.WikipediaLink = book.WikipediaLink;
                     uow.Books.SaveOrUpdate(oldBook);
                 } else {

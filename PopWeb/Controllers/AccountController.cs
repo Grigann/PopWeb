@@ -9,6 +9,8 @@ namespace Pop.Web.Controllers {
     using System.Web.Mvc;
     using System.Web.Security;
 
+    using Pop.Domain;
+
     /// <summary>
     /// Account controller
     /// </summary>
@@ -31,15 +33,18 @@ namespace Pop.Web.Controllers {
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Login(string userLogin, string userPassword, string referrerUrl) {
-            if (userLogin == "Laurent" && userPassword == "elrond") {
-                FormsAuthentication.SetAuthCookie(userLogin, false);
-                if (string.IsNullOrEmpty(referrerUrl)) {
-                    return RedirectToAction("Index", "Timeline");
+            using (var uow = new UnitOfWork(false)) {
+                var user = uow.Users.FindByNameAndPassword(userLogin, userPassword);
+                if (user == null) {
+                    return RedirectToAction("Login");
                 } else {
-                    return Redirect(referrerUrl);
+                    FormsAuthentication.SetAuthCookie(userLogin, false);
+                    if (string.IsNullOrEmpty(referrerUrl)) {
+                        return RedirectToAction("Index", "Timeline");
+                    } else {
+                        return Redirect(referrerUrl);
+                    }
                 }
-            } else {
-                return RedirectToAction("Login");
             }
         }
 

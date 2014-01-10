@@ -23,7 +23,6 @@ namespace Pop.Domain.Mappings {
             Map(x => x.ReleaseDate);
             Map(x => x.PosterFileName);
             Map(x => x.Summary);
-            Map(x => x.Review);
             Map(x => x.WikipediaLink);
 
             HasMany(x => x.WatchingSessions).Not.LazyLoad().Cascade.All().OrderBy("Date");

@@ -80,7 +80,6 @@ namespace Pop.Web.Controllers {
                     oldSerie.Creator = tvSerie.Creator;
                     oldSerie.ReleaseDate = tvSerie.ReleaseDate;
                     oldSerie.Summary = tvSerie.Summary;
-                    oldSerie.Review = tvSerie.Review;
                     oldSerie.WikipediaLink = tvSerie.WikipediaLink;
                     uow.TvSeries.SaveOrUpdate(oldSerie);
                 } else {

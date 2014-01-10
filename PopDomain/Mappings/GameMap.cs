@@ -24,7 +24,6 @@ namespace Pop.Domain.Mappings {
             Map(x => x.ReleaseDate);
             Map(x => x.CoverFileName);
             Map(x => x.Summary);
-            Map(x => x.Review);
             Map(x => x.WikipediaLink);
 
             HasMany(x => x.Achievements).Not.LazyLoad().Cascade.All().OrderBy("Id");
