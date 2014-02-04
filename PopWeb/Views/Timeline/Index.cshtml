@@ -127,7 +127,7 @@
 }
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title" style="font-size: 1.4em;">Hier et avant-hier<span id="show-today" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showToday();"></span><span id="hide-today" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideToday();"></span></h3>
+        <h3 class="panel-title" style="font-size: 1.4em;">Durant les 3 derniers jours<span id="show-today" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showToday();"></span><span id="hide-today" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideToday();"></span></h3>
     </div>
     <div id="today" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
         @if (Model.Today.Count == 0) {
@@ -142,7 +142,7 @@
 </div>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title" style="font-size: 1.4em;">Durant la derni&egrave;re semaine<span id="show-last-week" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastWeek();"></span><span id="hide-last-week" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastWeek();"></span></h3>
+        <h3 class="panel-title" style="font-size: 1.4em;">Durant les 10 derniers jours<span id="show-last-week" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastWeek();"></span><span id="hide-last-week" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastWeek();"></span></h3>
     </div>
     <div id="last-week" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
         @if (Model.LastWeek.Count == 0) {
@@ -157,7 +157,7 @@
 </div>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title" style="font-size: 1.4em;">Durant les trois derniers mois<span id="show-last-month" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastMonth();"></span><span id="hide-last-month" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastMonth();"></span></h3>
+        <h3 class="panel-title" style="font-size: 1.4em;">Durant les 3 derniers mois<span id="show-last-month" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastMonth();"></span><span id="hide-last-month" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastMonth();"></span></h3>
     </div>
     <div id="last-month" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
         @if (Model.LastMonth.Count == 0) {

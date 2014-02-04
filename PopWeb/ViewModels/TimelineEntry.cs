@@ -24,10 +24,9 @@ namespace Pop.Web.ViewModels {
             this.EntryType = session.GetType();
             this.Date = session.Date;
 
-            var todayLimit = DateTime.Today.AddDays(-1);
-            var lastWeekLimit = todayLimit.AddDays(-7);
-            var lastMonthLimit = lastWeekLimit.AddMonths(-1);
-            var lastYearLimit = lastMonthLimit.AddYears(-1);
+            var todayLimit = DateTime.Today.AddDays(-3);
+            var lastWeekLimit = todayLimit.AddDays(-10);
+            var lastMonthLimit = lastWeekLimit.AddMonths(-3);
 
             if (this.Date >= todayLimit) {
                 this.Timeline = "today";
@@ -35,8 +34,6 @@ namespace Pop.Web.ViewModels {
                 this.Timeline = "last-week";
             } else if (this.Date >= lastMonthLimit) {
                 this.Timeline = "last-month";
-            } else if (this.Date >= lastYearLimit) {
-                this.Timeline = "last-year";
             }
 
             if (session is ReadingSession) {

@@ -24,8 +24,8 @@ namespace Pop.Web.Controllers {
         /// <returns>An ActionResult</returns>
         [AllowAnonymous]
         public ActionResult Index() {
-            var todayLimit = DateTime.Today.AddDays(-2);
-            var lastWeekLimit = todayLimit.AddDays(-7);
+            var todayLimit = DateTime.Today.AddDays(-3);
+            var lastWeekLimit = todayLimit.AddDays(-10);
             var lastMonthLimit = lastWeekLimit.AddMonths(-3);
 
             var today = new List<IEntertainmentSession>();
@@ -54,19 +54,19 @@ namespace Pop.Web.Controllers {
 
                 today = today
                     .Concat(readingSessions
-                        .Where(x => x.Date >= todayLimit && x.Date < DateTime.Today.AddDays(1))
+                        .Where(x => x.Date >= todayLimit)
                         .GroupBy(x => x.Book.Id)
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .Concat(watchingSessions
-                        .Where(x => x.Date >= todayLimit && x.Date < DateTime.Today.AddDays(1))
+                        .Where(x => x.Date >= todayLimit)
                         .GroupBy(x => x.Movie.Id)
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .Concat(gamingSessions
-                        .Where(x => x.Date >= todayLimit && x.Date < DateTime.Today.AddDays(1))
+                        .Where(x => x.Date >= todayLimit)
                         .GroupBy(x => x.Game.Id)
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .Concat(tvSessions
-                        .Where(x => x.Date >= todayLimit && x.Date < DateTime.Today.AddDays(1))
+                        .Where(x => x.Date >= todayLimit)
                         .GroupBy(x => x.Episode.Id)
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .ToList();
