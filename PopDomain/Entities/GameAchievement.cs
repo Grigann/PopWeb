@@ -2,6 +2,7 @@
     using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
 
     /// <summary>
     /// Game achievement object
@@ -68,8 +69,26 @@
         /// <summary>
         /// Gets or sets the win date
         /// </summary>
-        [DisplayName("Date")]
         public virtual DateTime? WinDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date as a string to properly display and edit it
+        /// </summary>
+        [DisplayName("Date")]
+        public virtual string WinDateAsString {
+            get {
+                return this.WinDate.HasValue ? this.WinDate.Value.ToString("dd/MM/yyyy", null) : string.Empty;
+            }
+
+            set {
+                DateTime tempDate;
+                if (DateTime.TryParseExact(value, "dd/MM/yyyy", null, DateTimeStyles.None, out tempDate)) {
+                    this.WinDate = tempDate;
+                } else {
+                    this.WinDate = null;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the game

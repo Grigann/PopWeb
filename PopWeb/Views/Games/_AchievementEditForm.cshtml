@@ -57,10 +57,10 @@
         </div>
     </div>
     <div id="group-windate" class="form-group"> 
-        @Html.LabelFor(model => model.WinDate, new { @class = "control-label col-md-2", @style = "text-align: left;" })
+        @Html.LabelFor(model => model.WinDateAsString, new { @class = "control-label col-md-2", @style = "text-align: left;" })
         <div class="col-md-3">
-            @{ var winDateValue = Model.WinDate.HasValue ? Model.WinDate.Value.ToString("dd/MM/yyyy") : string.Empty; }
-            <input autocomplete="off" class="form-control" data-val="true" data-val-date="Le champ Date doit être une date." id="WinDate" name="WinDate" placeholder="@HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.WinDate).ToHtmlString())" type="text" value="@winDateValue" />
+            @{ var winDateValue = Model.WinDateAsString; }
+            <input autocomplete="off" class="form-control" data-val="true" data-val-date="Le champ Date doit être une date." id="WinDateAsString" name="WinDateAsString" placeholder="@HttpUtility.HtmlDecode(@Html.DisplayNameFor(x => x.WinDate).ToHtmlString())" type="text" value="@winDateValue" />
         </div>
     </div>
     <div class="row text-right">
