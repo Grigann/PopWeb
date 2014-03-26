@@ -56,7 +56,6 @@
     <Compile Include="Entities\Book.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Game.cs" />
-    <Compile Include="Entities\GameAchievement.cs" />
     <Compile Include="Entities\GamingSession.cs" />
     <Compile Include="Entities\IEntertainmentSession.cs" />
     <Compile Include="Entities\Movie.cs" />
@@ -67,7 +66,6 @@
     <Compile Include="Entities\WatchingSession.cs" />
     <Compile Include="Mappings\BookMap.cs" />
     <Compile Include="Mappings\UserMap.cs" />
-    <Compile Include="Mappings\GameAchievementMap.cs" />
     <Compile Include="Mappings\GameMap.cs" />
     <Compile Include="Mappings\GamingSessionMap.cs" />
     <Compile Include="Mappings\MovieMap.cs" />

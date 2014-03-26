@@ -26,7 +26,6 @@ namespace Pop.Domain.Mappings {
             Map(x => x.Summary);
             Map(x => x.WikipediaLink);
 
-            HasMany(x => x.Achievements).Not.LazyLoad().Cascade.All().OrderBy("Id");
             HasMany(x => x.GamingSessions).Not.LazyLoad().Cascade.All().OrderBy("Date");
         }
     }
