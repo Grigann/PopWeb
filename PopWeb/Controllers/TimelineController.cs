@@ -122,6 +122,7 @@ namespace Pop.Web.Controllers {
                                     session.Details = x.Aggregate((final, current) => final.AddDetails(current.Details)).Details;
                                     return session;
                             }))
+                    .OrderByDescending(x => x.Title)
                     .OrderByDescending(x => x.Date);
 
             var lastWeekEntries = lastWeek
@@ -136,6 +137,7 @@ namespace Pop.Web.Controllers {
                                 session.Details = x.Aggregate((final, current) => final.AddDetails(current.Details)).Details;
                                 return session;
                             }))
+                    .OrderByDescending(x => x.Title)
                     .OrderByDescending(x => x.Date);
 
             var lastMonthEntries = lastMonth
@@ -150,6 +152,7 @@ namespace Pop.Web.Controllers {
                                 session.Details = x.Aggregate((final, current) => final.AddDetails(current.Details)).Details;
                                 return session;
                             }))
+                    .OrderByDescending(x => x.Title)
                     .OrderByDescending(x => x.Date);
 
             var timelineDetails = new TimelineDetails() {
