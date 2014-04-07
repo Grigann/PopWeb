@@ -168,6 +168,7 @@
     <Content Include="Content\css\jquery.fancybox.css" />
     <Content Include="Content\css\jquery.jqplot.min.css" />
     <Content Include="Content\css\typeahead.js-bootstrap.css" />
+    <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\no_cover.jpg" />
     <Content Include="Content\js\jqplot.canvasAxisLabelRenderer.min.js" />
     <Content Include="Content\js\jqplot.canvasAxisTickRenderer.min.js" />
