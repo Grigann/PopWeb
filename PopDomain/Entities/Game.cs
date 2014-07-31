@@ -62,6 +62,24 @@ namespace Pop.Domain.Entities {
         public virtual string CoverFileName { get; set; }
 
         /// <summary>
+        /// Gets the medium thumbnail name.
+        /// </summary>
+        public virtual string MediumThumbName {
+            get {
+                return ThumbnailHandler.GetMedThumbName(this.CoverFileName);
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the small thumbnail.
+        /// </summary>
+        public virtual string SmallThumbName {
+            get {
+                return ThumbnailHandler.GetSmallThumbName(this.CoverFileName);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the summary
         /// </summary>
         [DisplayName("Résumé")]

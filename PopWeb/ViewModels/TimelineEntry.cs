@@ -24,13 +24,10 @@ namespace Pop.Web.ViewModels {
             this.EntryType = session.GetType();
             this.Date = session.Date;
 
-            var todayLimit = DateTime.Today.AddDays(-3);
-            var lastWeekLimit = todayLimit.AddDays(-10);
-            var lastMonthLimit = lastWeekLimit.AddMonths(-3);
+            var lastWeekLimit = DateTime.Today.AddDays(-7);
+            var lastMonthLimit = DateTime.Today.AddMonths(-2);
 
-            if (this.Date >= todayLimit) {
-                this.Timeline = "today";
-            } else if (this.Date >= lastWeekLimit) {
+            if (this.Date >= lastWeekLimit) {
                 this.Timeline = "last-week";
             } else if (this.Date >= lastMonthLimit) {
                 this.Timeline = "last-month";
@@ -111,7 +108,7 @@ namespace Pop.Web.ViewModels {
                     : HttpUtility.HtmlEncode(readingSession.Book.Writer + ", " + readingSession.Book.PublicationDate);
             this.ImageUrl = string.IsNullOrEmpty(readingSession.Book.CoverFileName)
                     ? "/Content/images/no_cover.jpg"
-                    : "/Content/images/books/" + readingSession.Book.CoverFileName;
+                    : "/Content/images/books/" + readingSession.Book.MediumThumbName;
             this.ImageAlt = HttpUtility.HtmlEncode("Couverture de " + readingSession.Book.Title);
         }
 
@@ -128,7 +125,7 @@ namespace Pop.Web.ViewModels {
                     : HttpUtility.HtmlEncode(watchingSession.Movie.Director + ", " + watchingSession.Movie.ReleaseDate);
             this.ImageUrl = string.IsNullOrEmpty(watchingSession.Movie.PosterFileName)
                     ? "/Content/images/no_cover.jpg"
-                    : "/Content/images/movies/" + watchingSession.Movie.PosterFileName;
+                    : "/Content/images/movies/" + watchingSession.Movie.MediumThumbName;
             this.ImageAlt = HttpUtility.HtmlEncode("Poster de " + watchingSession.Movie.Title);
         }
 
@@ -145,7 +142,7 @@ namespace Pop.Web.ViewModels {
                     : HttpUtility.HtmlEncode(gamingSession.Game.Developper + ", " + gamingSession.Game.ReleaseDate);
             this.ImageUrl = string.IsNullOrEmpty(gamingSession.Game.CoverFileName)
                     ? "/Content/images/no_cover.jpg"
-                    : "/Content/images/games/" + gamingSession.Game.CoverFileName;
+                    : "/Content/images/games/" + gamingSession.Game.MediumThumbName;
             this.ImageAlt = HttpUtility.HtmlEncode("Couverture de " + gamingSession.Game.Title);
         }
 
@@ -164,7 +161,7 @@ namespace Pop.Web.ViewModels {
             this.Details = "Ep. " + tvWatchingSession.Episode.Number + " - \"<em>" + HttpUtility.HtmlEncode(episode.Title) + "\"</em>";
             this.ImageUrl = string.IsNullOrEmpty(season.PosterFileName)
                     ? "/Content/images/no_cover.jpg"
-                    : "/Content/images/tvSeries/" + season.PosterFileName;
+                    : "/Content/images/tvSeries/" + season.MediumThumbName;
             this.ImageAlt = this.Title;
         }
     }

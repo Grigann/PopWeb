@@ -49,6 +49,24 @@ namespace Pop.Domain.Entities {
         public virtual string PosterFileName { get; set; }
 
         /// <summary>
+        /// Gets the medium thumbnail name.
+        /// </summary>
+        public virtual string MediumThumbName {
+            get {
+                return ThumbnailHandler.GetMedThumbName(this.PosterFileName);
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the small thumbnail.
+        /// </summary>
+        public virtual string SmallThumbName {
+            get {
+                return ThumbnailHandler.GetSmallThumbName(this.PosterFileName);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the parent series
         /// </summary>
         public virtual TvSerie TvSerie {

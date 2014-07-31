@@ -83,7 +83,11 @@ namespace Pop.Web.Controllers {
                     Directory.CreateDirectory(directory);
                 }
 
-                coverFile.SaveAs(Path.Combine(directory, fileName));
+                // Saves the original image
+                var originalFilePath = Path.Combine(directory, fileName);
+                coverFile.SaveAs(originalFilePath);
+
+                ThumbnailHandler.CreateAllThumbs(originalFilePath);
             }
 
             using (var uow = new UnitOfWork(true)) {

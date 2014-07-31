@@ -27,9 +27,12 @@
                 <td class="text-center" style="padding: 0.4em inherit;">
                     @{ var imageUrl = string.IsNullOrEmpty(game.CoverFileName)
                                 ? "/Content/images/no_cover.jpg"
-                                : "/Content/images/games/" + game.CoverFileName; }
+                                : "/Content/images/games/" + game.CoverFileName;
+                       var smallThumbUrl = string.IsNullOrEmpty(game.CoverFileName)
+                                ? "/Content/images/no_cover.jpg"
+                                : "/Content/images/games/" + game.SmallThumbName; }
                     <a class="fancybox" rel="group" href="@imageUrl">
-                        <img src="@imageUrl" alt="@game.Title (couverture)" style="height: 3.6em;" />
+                        <img src="@smallThumbUrl" alt="@game.Title (couverture)" style="height: 3.6em;" />
                     </a>
                 </td>
                 <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "Games", new { id = game.Id })';">@game.Title</td>

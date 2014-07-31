@@ -28,9 +28,12 @@
                 <td class="text-center" style="padding: 0.4em inherit;">
                     @{ var imageUrl = tvSerie.Seasons.Count == 0 || string.IsNullOrEmpty(tvSerie.Seasons[0].PosterFileName)
                                 ? "/Content/images/no_cover.jpg"
-                                : "/Content/images/tvSeries/" + @tvSerie.Seasons[0].PosterFileName; }
+                                : "/Content/images/tvSeries/" + @tvSerie.Seasons[0].PosterFileName;
+                       var smallThumbUrl = tvSerie.Seasons.Count == 0 || string.IsNullOrEmpty(tvSerie.Seasons[0].PosterFileName)
+                                ? "/Content/images/no_cover.jpg"
+                                : "/Content/images/tvSeries/" + @tvSerie.Seasons[0].SmallThumbName; }
                     <a class="fancybox" rel="group" href="@imageUrl">
-                        <img src="@imageUrl" alt="@tvSerie.Title (couverture)" style="height: 3.6em;" />
+                        <img src="@smallThumbUrl" alt="@tvSerie.Title (couverture)" style="height: 65px;" />
                     </a>
                 </td>
                 <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "TvSeries", new { id = tvSerie.Id })';">@tvSerie.Title</td>

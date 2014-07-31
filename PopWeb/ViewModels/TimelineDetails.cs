@@ -8,14 +8,9 @@ namespace Pop.Web.ViewModels {
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents the four lists of timeline entries to display in the index
+    /// Represents the lists of timeline entries to display in the index
     /// </summary>
     public class TimelineDetails {
-        /// <summary>
-        /// Gets or sets the list of entries for today and yesterday, and the day before
-        /// </summary>
-        public IList<TimelineEntry> Today { get; set; }
-
         /// <summary>
         /// Gets or sets the list of entries for the week before the day before yesterday
         /// </summary>

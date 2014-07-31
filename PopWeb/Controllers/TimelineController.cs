@@ -10,6 +10,7 @@ namespace Pop.Web.Controllers {
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Security;
+
     using Pop.Domain;
     using Pop.Domain.Entities;
     using Pop.Web.ViewModels;
@@ -24,11 +25,9 @@ namespace Pop.Web.Controllers {
         /// <returns>An ActionResult</returns>
         [AllowAnonymous]
         public ActionResult Index() {
-            var todayLimit = DateTime.Today.AddDays(-3);
-            var lastWeekLimit = todayLimit.AddDays(-10);
-            var lastMonthLimit = lastWeekLimit.AddMonths(-3);
+            var lastWeekLimit = DateTime.Today.AddDays(-7);
+            var lastMonthLimit = lastWeekLimit.AddMonths(-2);
 
-            var today = new List<IEntertainmentSession>();
             var lastWeek = new List<IEntertainmentSession>();
             var lastMonth = new List<IEntertainmentSession>();
 
@@ -52,40 +51,21 @@ namespace Pop.Web.Controllers {
                         .SelectMany(x => x.WatchingSessions)
                         .Where(x => x.Date >= lastMonthLimit);
 
-                today = today
-                    .Concat(readingSessions
-                        .Where(x => x.Date >= todayLimit)
-                        .GroupBy(x => x.Book.Id)
-                        .Select(x => x.OrderBy(y => y.Date).Last()))
-                    .Concat(watchingSessions
-                        .Where(x => x.Date >= todayLimit)
-                        .GroupBy(x => x.Movie.Id)
-                        .Select(x => x.OrderBy(y => y.Date).Last()))
-                    .Concat(gamingSessions
-                        .Where(x => x.Date >= todayLimit)
-                        .GroupBy(x => x.Game.Id)
-                        .Select(x => x.OrderBy(y => y.Date).Last()))
-                    .Concat(tvSessions
-                        .Where(x => x.Date >= todayLimit)
-                        .GroupBy(x => x.Episode.Id)
-                        .Select(x => x.OrderBy(y => y.Date).Last()))
-                    .ToList();
-
                 lastWeek = lastWeek
                     .Concat(readingSessions
-                        .Where(x => x.Date >= lastWeekLimit && x.Date < todayLimit)
+                        .Where(x => x.Date >= lastWeekLimit)
                         .GroupBy(x => x.Book.Id)
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .Concat(watchingSessions
-                        .Where(x => x.Date >= lastWeekLimit && x.Date < todayLimit)
+                        .Where(x => x.Date >= lastWeekLimit)
                         .GroupBy(x => x.Movie.Id)
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .Concat(gamingSessions
-                        .Where(x => x.Date >= lastWeekLimit && x.Date < todayLimit)
+                        .Where(x => x.Date >= lastWeekLimit)
                         .GroupBy(x => x.Game.Id)
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .Concat(tvSessions
-                        .Where(x => x.Date >= lastWeekLimit && x.Date < todayLimit)
+                        .Where(x => x.Date >= lastWeekLimit)
                         .GroupBy(x => x.Episode.Id)
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .ToList();
@@ -109,21 +89,6 @@ namespace Pop.Web.Controllers {
                         .Select(x => x.OrderBy(y => y.Date).Last()))
                     .ToList();
             }
-
-            var todayEntries = today
-                    .Where(x => x.GetType() != typeof(TvWatchingSession))
-                    .Select(x => new TimelineEntry(x, this))
-                    .Concat(today
-                            .Where(x => x.GetType() == typeof(TvWatchingSession))
-                            .Select(x => new TimelineEntry(x, this))
-                            .GroupBy(x => x.Title)
-                            .Select(x => { 
-                                    var session = x.OrderBy(y => y.Date).Last();
-                                    session.Details = x.Aggregate((final, current) => final.AddDetails(current.Details)).Details;
-                                    return session;
-                            }))
-                    .OrderByDescending(x => x.Title)
-                    .OrderByDescending(x => x.Date);
 
             var lastWeekEntries = lastWeek
                     .Where(x => x.GetType() != typeof(TvWatchingSession))
@@ -156,7 +121,6 @@ namespace Pop.Web.Controllers {
                     .OrderByDescending(x => x.Date);
 
             var timelineDetails = new TimelineDetails() {
-                Today = todayEntries.ToList(),
                 LastWeek = lastWeekEntries.ToList(),
                 LastMonth = lastMonthEntries.ToList()
             };

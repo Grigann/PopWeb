@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------
 namespace Pop.Web.Controllers {
     using System;
+    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -134,7 +135,11 @@ namespace Pop.Web.Controllers {
                     Directory.CreateDirectory(directory);
                 }
 
-                posterFile.SaveAs(Path.Combine(directory, fileName));
+                // Saves the original image
+                var originalFilePath = Path.Combine(directory, fileName);
+                posterFile.SaveAs(originalFilePath);
+
+                ThumbnailHandler.CreateAllThumbs(originalFilePath);
             }
 
             using (var uow = new UnitOfWork(true)) {

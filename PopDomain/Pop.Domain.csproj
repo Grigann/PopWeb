@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -64,6 +65,7 @@
     <Compile Include="Entities\TvSerieSeason.cs" />
     <Compile Include="Entities\TvWatchingSession.cs" />
     <Compile Include="Entities\WatchingSession.cs" />
+    <Compile Include="ThumbnailHandler.cs" />
     <Compile Include="Mappings\BookMap.cs" />
     <Compile Include="Mappings\UserMap.cs" />
     <Compile Include="Mappings\GameMap.cs" />
