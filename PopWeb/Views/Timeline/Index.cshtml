@@ -127,7 +127,22 @@
 }
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title" style="font-size: 1.4em;">La semaine dernière<span id="show-last-week" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastWeek();"></span><span id="hide-last-week" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastWeek();"></span></h3>
+        <h3 class="panel-title" style="font-size: 1.4em;">@Model.ThisWeekLabel<span id="show-today" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showToday();"></span><span id="hide-today" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideToday();"></span></h3>
+    </div>
+    <div id="today" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
+        @if (Model.ThisWeek.Count == 0) {
+            <div class="no-entry" style="margin: 1.4em 1.4em 0 0;"><em>Aucun contenu chronophage &agrave afficher<span class="fa fa-meh-o fa-lg" style="margin-left: 0.4em;"></span></em></div>
+        }
+        else {
+            foreach (var entry in Model.ThisWeek) {
+                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="height: 160px; margin: 1.4em 1.4em 0 0;" /></a>
+            }
+        }
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title" style="font-size: 1.4em;">@Model.LastWeekLabel<span id="show-last-week" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastWeek();"></span><span id="hide-last-week" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastWeek();"></span></h3>
     </div>
     <div id="last-week" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
         @if (Model.LastWeek.Count == 0) {
@@ -142,7 +157,7 @@
 </div>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title" style="font-size: 1.4em;">Les deux derniers mois<span id="show-last-month" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastMonth();"></span><span id="hide-last-month" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastMonth();"></span></h3>
+        <h3 class="panel-title" style="font-size: 1.4em;">@Model.LastMonthLabel<span id="show-last-month" class="fa fa-angle-double-down fa-lg" style="cursor: pointer; display: none; margin-left: 0.6em;" onclick="return showLastMonth();"></span><span id="hide-last-month" class="fa fa-angle-double-up fa-lg" style="cursor: pointer; margin-left: 0.6em;" onclick="return hideLastMonth();"></span></h3>
     </div>
     <div id="last-month" class="panel-body" style="margin: -1.4em -1.4em 0 0;">
         @if (Model.LastMonth.Count == 0) {
@@ -229,9 +244,9 @@ function saveTvSerie() {
                 var delay = 1000;
                 $('.alert-danger').hide();
                 $('#' + timelineEntry.Timeline + ' .no-entry').hide();
-                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="width: 0; margin: 1.4em 1.4em 0 0;" />')
+                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="height: 0; margin: 1.4em 1.4em 0 0;" />')
                         .prependTo('#' + timelineEntry.Timeline)
-                        .animate({ width: '8em' }, delay)
+                        .animate({ height: '160px' }, delay)
                         .wrap('<a href="' + timelineEntry.ViewUrl + '"></a>')
                         .popover({ html: true, trigger: 'hover', placement: 'auto top' });
             }
@@ -284,9 +299,9 @@ function saveBook() {
                 var delay = 1000;
                 $('.alert-danger').hide();
                 $('#' + timelineEntry.Timeline + ' .no-entry').hide();
-                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="width: 0; margin: 1.4em 1.4em 0 0;" />')
+                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="height: 0; margin: 1.4em 1.4em 0 0;" />')
                         .prependTo('#' + timelineEntry.Timeline)
-                        .animate({ width: '8em' }, delay)
+                        .animate({ height: '160px' }, delay)
                         .wrap('<a href="' + timelineEntry.ViewUrl + '"></a>')
                         .popover({ html: true, trigger: 'hover', placement: 'auto top' });
             }
@@ -338,9 +353,9 @@ function saveMovie() {
                 var delay = 1000;
                 $('.alert-danger').hide();
                 $('#' + timelineEntry.Timeline + ' .no-entry').hide();
-                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="width: 0; margin: 1.4em 1.4em 0 0;" />')
+                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="height: 0; margin: 1.4em 1.4em 0 0;" />')
                         .prependTo('#' + timelineEntry.Timeline)
-                        .animate({ width: '8em' }, delay)
+                        .animate({ height: '160px' }, delay)
                         .wrap('<a href="' + timelineEntry.ViewUrl + '"></a>')
                         .popover({ html: true, trigger: 'hover', placement: 'auto top' });
             }
@@ -393,9 +408,9 @@ function saveGame() {
                 var delay = 1000;
                 $('.alert-danger').hide();
                 $('#' + timelineEntry.Timeline + ' .no-entry').hide();
-                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="width: 0; margin: 1.4em 1.4em 0 0;" />')
+                $('<img class="timeline-entry" title=\'<strong>' + timelineEntry.Title + '</strong>\' data-content=\'' + timelineEntry.Details + '\' src="' + timelineEntry.ImageUrl + '" alt="' + timelineEntry.ImageAlt + '" style="height: 0; margin: 1.4em 1.4em 0 0;" />')
                         .prependTo('#' + timelineEntry.Timeline)
-                        .animate({ width: '8em' }, delay)
+                        .animate({ height: '160px' }, delay)
                         .wrap('<a href="' + timelineEntry.ViewUrl + '"></a>')
                         .popover({ html: true, trigger: 'hover', placement: 'auto top' });
             }

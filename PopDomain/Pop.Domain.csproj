@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="ChartHelper.cs" />
     <Compile Include="ChartIntervalType.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="Entities\Book.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Game.cs" />

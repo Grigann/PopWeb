@@ -9,6 +9,7 @@ namespace Pop.Web.ViewModels {
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
 
+    using Pop.Domain;
     using Pop.Domain.Entities;
 
     /// <summary>
@@ -24,10 +25,15 @@ namespace Pop.Web.ViewModels {
             this.EntryType = session.GetType();
             this.Date = session.Date;
 
-            var lastWeekLimit = DateTime.Today.AddDays(-7);
-            var lastMonthLimit = DateTime.Today.AddMonths(-2);
+            var today = DateTime.Today;
+            var thisWeekLimit = today.StartOfWeek(DayOfWeek.Monday);
+            var lastWeekLimit = thisWeekLimit.AddDays(-7);
+            var lastMonthLimit = today.AddMonths(-2);
+            lastMonthLimit = lastMonthLimit.AddDays(1 - lastMonthLimit.Day);
 
-            if (this.Date >= lastWeekLimit) {
+            if (this.Date >= thisWeekLimit) {
+                this.Timeline = "today";
+            } else if (this.Date >= lastWeekLimit) {
                 this.Timeline = "last-week";
             } else if (this.Date >= lastMonthLimit) {
                 this.Timeline = "last-month";
