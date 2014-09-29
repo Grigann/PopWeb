@@ -31,7 +31,11 @@
         @{
             if (Model.WatchingSessions.Count > 0) {
                 foreach (var session in Model.WatchingSessions.OrderBy(x => x.Date)) {
-                    @: <div class="col-md-12" style="font-size: 1.2em;">vu le @session.Date.ToString("dddd dd MMMM yyyy", System.Globalization.CultureInfo.GetCultureInfo("fr-Fr"))</div>
+                    if (!string.IsNullOrEmpty(session.Note)) {
+                        @: <div class="col-md-12" style="font-size: 1.2em;">@session.Note le @session.Date.ToString("dddd dd MMMM yyyy", System.Globalization.CultureInfo.GetCultureInfo("fr-Fr"))</div>
+                    } else {
+                        @: <div class="col-md-12" style="font-size: 1.2em;">vu le @session.Date.ToString("dddd dd MMMM yyyy", System.Globalization.CultureInfo.GetCultureInfo("fr-Fr"))</div>
+                    }
                 }
             }
             
