@@ -524,6 +524,8 @@ $(document).ready(function () {
     $('#newTypeTvSeries').prop('checked', true);
 
     var d = new Date();
+    d.setDate(d.getDate() - 1); // yesterday by default
+
     var month = d.getMonth() + 1;
     var day = d.getDate();
     var output = (day < 10 ? '0' : '') + day + '/' +
