@@ -20,6 +20,7 @@ namespace Pop.Domain.Mappings {
             Map(x => x.Number);
             Map(x => x.ReleaseDate);
             Map(x => x.PosterFileName);
+            Map(x => x.IsDone);
             References(x => x.TvSerie);
 
             HasMany(x => x.Episodes).Not.LazyLoad().Cascade.All();

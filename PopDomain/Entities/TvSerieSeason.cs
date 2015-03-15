@@ -48,6 +48,12 @@ namespace Pop.Domain.Entities {
         public virtual string PosterFileName { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this season is done.
+        /// </summary>
+        [DisplayName("terminée")]
+        public virtual bool IsDone { get; set; }
+
+        /// <summary>
         /// Gets the medium thumbnail name.
         /// </summary>
         public virtual string MediumThumbName {

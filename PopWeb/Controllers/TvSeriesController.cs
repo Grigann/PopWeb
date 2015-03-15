@@ -149,6 +149,7 @@ namespace Pop.Web.Controllers {
                     tvSerie.AddSeason(season);
                 } else {
                     var oldSeason = tvSerie.Seasons.Single(x => x.Id == season.Id);
+                    oldSeason.IsDone = season.IsDone;
                     oldSeason.Number = season.Number;
                     oldSeason.ReleaseDate = season.ReleaseDate;
                     oldSeason.PosterFileName = season.PosterFileName;

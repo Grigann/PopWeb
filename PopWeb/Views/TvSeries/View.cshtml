@@ -64,47 +64,52 @@
                 <div class="tab-pane" id="saison-@season.Number" style="padding: 2em 1em;">
                     <div class="col-md-8">
                         <div class="col-md-12" style="font-size: 1.2em;">
-                            contenant <strong>@season.Episodes.Count</strong> &eacute;pisodes diffus&eacute;s en <strong>@season.ReleaseDate</strong>
+                        @if (season.IsDone) {
+                            <span>Saison diffus&eacute;e en <strong>@season.ReleaseDate</strong> et contenant <strong>@season.Episodes.Count</strong> &eacute;pisodes</span>
+                        } else {
+                            <span>Saison en cours de diffusion et contenant pour l'instant <strong>@season.Episodes.Count</strong> &eacute;pisodes</span>
+                        }
                             @if (Request.IsAuthenticated) {
-                                <a href="@Url.Action("EditSeason", new { serieId = @Model.Id, seasonId = @season.Id })" class="btn btn-default" style="margin-left: 1em;"><span class="fa fa-edit fa-lg"></span></a>
+                                <a href="@Url.Action("EditSeason", new {serieId = @Model.Id, seasonId = @season.Id})" class="btn btn-default" style="margin-left: 1em;"><span class="fa fa-edit fa-lg"></span></a>
                             }
-                        </div>
+                        </div>                            
+
                         <table class="table table-condensed" style="margin-top: 1.8em;">
                             <thead>
-                                <tr>
-                                    <th style="display: none;"></th>
-                                    <th style="display: none;"></th>
-                                    <th style="display: none;"></th>
-                                    <th class="text-center">#</th>
-                                    <th>Titre</th>
-                                    @if (Request.IsAuthenticated) { 
-                                        <th></th> 
-                                    }
-                                </tr>
+                            <tr>
+                                <th style="display: none;"></th>
+                                <th style="display: none;"></th>
+                                <th style="display: none;"></th>
+                                <th class="text-center">#</th>
+                                <th>Titre</th>
+                                @if (Request.IsAuthenticated) {
+                                    <th></th>
+                                }
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var episode in season.Episodes.OrderBy(x => x.Number)) {
-                                    <tr>
-                                        <td style="display:none;"><input id="e-@season.Id-@episode.Id-serieId" type="text" value="@Model.Id" /></td>
-                                        <td style="display:none;"><input id="e-@season.Id-@episode.Id-seasonId" type="text" value="@season.Id" /></td>
-                                        <td style="display:none;"><input id="e-@season.Id-@episode.Id-id" type="text" value="@episode.Id" /></td>
-                                        <td class="col-md-2"><input id="e-@season.Id-@episode.Id-number" type="text" class="form-control" value="@episode.Number" placeholder="#" /></td>
-                                        <td><input id="e-@season.Id-@episode.Id-title" type="text" class="form-control" value="@episode.Title" placeholder="Titre" /></td>
-                                        @if (Request.IsAuthenticated) {
-                                            <td class="col-md-1 text-center"><button type="button" id="save-@season.Id-@episode.Id" class="btn btn-default save-episode"><span class="fa fa-save fa-lg"></span></button></td>
-                                        }
-                                    </tr>
-                                }
-                                @if (Request.IsAuthenticated) {
+                            @foreach (var episode in season.Episodes.OrderBy(x => x.Number)) {
+                                <tr>
+                                    <td style="display: none;"><input id="e-@season.Id-@episode.Id-serieId" type="text" value="@Model.Id"/></td>
+                                    <td style="display: none;"><input id="e-@season.Id-@episode.Id-seasonId" type="text" value="@season.Id"/></td>
+                                    <td style="display: none;"><input id="e-@season.Id-@episode.Id-id" type="text" value="@episode.Id"/></td>
+                                    <td class="col-md-2"><input id="e-@season.Id-@episode.Id-number" type="text" class="form-control" value="@episode.Number" placeholder="#"/></td>
+                                    <td><input id="e-@season.Id-@episode.Id-title" type="text" class="form-control" value="@episode.Title" placeholder="Titre"/></td>
+                                    @if (Request.IsAuthenticated) {
+                                        <td class="col-md-1 text-center"><button type="button" id="save-@season.Id-@episode.Id" class="btn btn-default save-episode"><span class="fa fa-save fa-lg"></span></button></td>
+                                    }
+                                </tr>
+                            }
+                            @if (Request.IsAuthenticated && !season.IsDone) {
                                 <tr id="new-@season.Id-row">
-                                    <td style="display:none;"><input id="e-@season.Id-new-serieId" type="text" value="@Model.Id" /></td>
-                                    <td style="display:none;"><input id="e-@season.Id-new-seasonId" type="text" value="@season.Id" /></td>
-                                    <td style="display:none;"><input id="e-@season.Id-new-id" type="text" value="0" /></td>
-                                    <td class="col-md-2"><input id="e-@season.Id-new-number" type="text" class="form-control" value="" placeholder="#" /></td>
-                                    <td><input id="e-@season.Id-new-title" type="text" class="form-control" value="" placeholder="Titre" /></td>
+                                    <td style="display: none;"><input id="e-@season.Id-new-serieId" type="text" value="@Model.Id"/></td>
+                                    <td style="display: none;"><input id="e-@season.Id-new-seasonId" type="text" value="@season.Id"/></td>
+                                    <td style="display: none;"><input id="e-@season.Id-new-id" type="text" value="0"/></td>
+                                    <td class="col-md-2"><input id="e-@season.Id-new-number" type="text" class="form-control" value="" placeholder="#"/></td>
+                                    <td><input id="e-@season.Id-new-title" type="text" class="form-control" value="" placeholder="Titre"/></td>
                                     <td class="col-md-1 text-center"><button type="button" id="save-@season.Id-new" class="btn btn-default save-episode"><span class="fa fa-save fa-lg"></span></button></td>
                                 </tr>
-                                }
+                            }
                             </tbody>
                         </table>
                     </div>
