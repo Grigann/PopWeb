@@ -24,7 +24,7 @@
     <tbody style="font-size: 1.2em;">
         @foreach (var book in Model) {
             <tr style="cursor: pointer;">
-                <td class="text-center" style="padding: 0.4em inherit;">
+                <td class="text-center" style="padding: 0.4em;">
                     @{ var imageUrl = string.IsNullOrEmpty(book.CoverFileName)
                                 ? "/Content/images/no_cover.jpg" 
                                 : "/Content/images/books/" + book.CoverFileName;
@@ -36,7 +36,7 @@
                         <img src="@smallThumbUrl" alt="@book.Title (couverture)" style="height: 65px;" />
                     </a>
                 </td>
-                <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "Books", new { id = book.Id })';">@book.Title</td>
+                <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "Books", new { id = book.Id })';">@book.FullTitle</td>
                 <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "Books", new { id = book.Id })';">@book.Writer</td>
                 <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "Books", new { id = book.Id })';">@book.PublicationDate</td>
             </tr>

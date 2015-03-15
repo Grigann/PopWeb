@@ -26,7 +26,7 @@ namespace Pop.Web.Controllers {
         [AllowAnonymous]
         public ActionResult Index() {
             using (var uow = new UnitOfWork(false)) {
-                var books = uow.Books.All().OrderBy(x => x.Title).ToList();
+                var books = uow.Books.All().OrderBy(x => x.FullTitle).ToList();
                 return View(books);
             }
         }

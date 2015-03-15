@@ -99,6 +99,17 @@ namespace Pop.Domain.Entities {
         public virtual string WikipediaLink { get; set; }
 
         /// <summary>
+        /// Gets the full title (including the series title and book number if applicable).
+        /// </summary>
+        public virtual string FullTitle {
+            get {
+                return string.IsNullOrEmpty(this.BookSeries)
+                    ? this.Title
+                    : this.BookSeries + " " + this.BookNumber + " : " + this.Title;
+            }
+        }
+
+        /// <summary>
         /// Gets the list of reading sessions
         /// </summary>
         public virtual IList<ReadingSession> ReadingSessions { get; protected set; }
