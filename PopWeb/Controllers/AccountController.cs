@@ -39,14 +39,14 @@ namespace Pop.Web.Controllers {
                 var user = uow.Users.FindByNameAndPassword(userLogin, userPassword);
                 if (user == null) {
                     return RedirectToAction("Login");
-                } else {
-                    FormsAuthentication.SetAuthCookie(userLogin, false);
-                    if (string.IsNullOrEmpty(referrerUrl)) {
-                        return RedirectToAction("Index", "Timeline");
-                    } else {
-                        return Redirect(referrerUrl);
-                    }
                 }
+
+                FormsAuthentication.SetAuthCookie(userLogin, false);
+                if (string.IsNullOrEmpty(referrerUrl) || referrerUrl.EndsWith("login")) {
+                    return this.RedirectToAction("Index", "Timeline");
+                }
+
+                return this.Redirect(referrerUrl);
             }
         }
 
