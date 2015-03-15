@@ -15,6 +15,7 @@
 <table class="table table-hover" style="margin-top: -1em;">
     <thead style="font-size: 1.4em;">
         <tr>
+            <th style="padding: 0.6em 0 0.6em 0.4em;"/>
             <th style="padding: 0.6em 0 0.6em 0.4em;" />
             <th style="padding: 0.6em 0 0.6em 0.4em; text-align: left;">Titre</th>
             <th style="padding: 0.6em 0 0.6em 0.4em; text-align: center;">Saisons</th>
@@ -25,16 +26,25 @@
     <tbody style="font-size: 1.2em;">
         @foreach (var tvSerie in Model) {
             <tr style="cursor: pointer;">
-                <td class="text-center" style="padding: 0.4em inherit;">
-                    @{ var imageUrl = tvSerie.Seasons.Count == 0 || string.IsNullOrEmpty(tvSerie.Seasons[0].PosterFileName)
-                                ? "/Content/images/no_cover.jpg"
-                                : "/Content/images/tvSeries/" + @tvSerie.Seasons[0].PosterFileName;
-                       var smallThumbUrl = tvSerie.Seasons.Count == 0 || string.IsNullOrEmpty(tvSerie.Seasons[0].PosterFileName)
-                                ? "/Content/images/no_cover.jpg"
-                                : "/Content/images/tvSeries/" + @tvSerie.Seasons[0].SmallThumbName; }
+                <td class="text-center" style="padding: 0.4em 0 0.4em 0.4em;">
+                    @{
+                        var imageUrl = tvSerie.Seasons.Count == 0 || string.IsNullOrEmpty(tvSerie.Seasons[0].PosterFileName)
+                            ? "/Content/images/no_cover.jpg"
+                            : "/Content/images/tvSeries/" + @tvSerie.Seasons[0].PosterFileName;
+                        var smallThumbUrl = tvSerie.Seasons.Count == 0 || string.IsNullOrEmpty(tvSerie.Seasons[0].PosterFileName)
+                            ? "/Content/images/no_cover.jpg"
+                            : "/Content/images/tvSeries/" + @tvSerie.Seasons[0].SmallThumbName;
+                    }
                     <a class="fancybox" rel="group" href="@imageUrl">
-                        <img src="@smallThumbUrl" alt="@tvSerie.Title (couverture)" style="height: 65px;" />
+                        <img src="@smallThumbUrl" alt="@tvSerie.Title (couverture)" style="height: 65px;"/>
                     </a>
+                </td>
+                <td style="padding: 0; vertical-align: middle; text-align: center;">
+                    @if (!tvSerie.IsDone) {
+                        <i class="fa fa-play text-success"></i>
+                    } else {
+                        <i class="fa fa-stop text-danger"></i>
+                    }                    
                 </td>
                 <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle;" onclick="window.location.href = '@Url.Action("View", "TvSeries", new { id = tvSerie.Id })';">@tvSerie.Title</td>
                 <td style="padding: 0.6em 0 0.6em 0.4em; vertical-align: middle; text-align: center;" onclick="window.location.href = '@Url.Action("View", "TvSeries", new { id = tvSerie.Id })';">@tvSerie.Seasons.Count</td>

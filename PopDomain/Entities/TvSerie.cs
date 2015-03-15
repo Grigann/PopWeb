@@ -63,6 +63,12 @@ namespace Pop.Domain.Entities {
         public virtual string WikipediaLink { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this tv show is done.
+        /// </summary>
+        [DisplayName("terminée")]
+        public virtual bool IsDone { get; set; }
+
+        /// <summary>
         /// Gets the list of seasons
         /// </summary>
         public virtual IList<TvSerieSeason> Seasons { get; protected set; }

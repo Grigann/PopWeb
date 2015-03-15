@@ -20,7 +20,7 @@ namespace Pop.Domain {
         /// <summary>
         /// Session factory
         /// </summary>
-        private static ISessionFactory sessionFactory = null;
+        private static ISessionFactory sessionFactory;
 
         /// <summary>
         /// Initializes the connection and creates the database if necessary

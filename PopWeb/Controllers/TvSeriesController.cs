@@ -81,6 +81,7 @@ namespace Pop.Web.Controllers {
                     oldSerie.ReleaseDate = tvSerie.ReleaseDate;
                     oldSerie.Summary = tvSerie.Summary;
                     oldSerie.WikipediaLink = tvSerie.WikipediaLink;
+                    oldSerie.IsDone = tvSerie.IsDone;
                     uow.TvSeries.SaveOrUpdate(oldSerie);
                 } else {
                     uow.TvSeries.SaveOrUpdate(tvSerie);

@@ -23,6 +23,7 @@ namespace Pop.Domain.Mappings {
             Map(x => x.ReleaseDate);
             Map(x => x.Summary);
             Map(x => x.WikipediaLink);
+            Map(x => x.IsDone);
 
             HasMany(x => x.Seasons).Not.LazyLoad().Cascade.All().OrderBy("Number");
         }

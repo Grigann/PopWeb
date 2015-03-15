@@ -24,7 +24,7 @@
                 @foreach (var season in Model.Seasons) {
                     <li><a href="#saison-@season.Number" data-toggle="tab" onclick="return false;">Saison @season.Number</a></li>
                 }
-                @if (Request.IsAuthenticated) {
+                @if (Request.IsAuthenticated && !Model.IsDone) {
                     <li><a href="@Url.Action("NewSeason", new { serieId = @Model.Id })"><span class="fa fa-plus fa-lg"></span></a></li>
                 }
             </ul>
@@ -40,7 +40,7 @@
                     @{
                         var releaseDateText = string.Empty;
                         if (!string.IsNullOrEmpty(Model.ReleaseDate)) {
-                            if (Model.ReleaseDate.EndsWith("???")) {
+                            if (!Model.IsDone) {
                                 releaseDateText = "en cours de diffusion depuis <strong>" + Model.ReleaseDate.Split(new char[] { '-' })[0] + "</strong>";
                             } else {
                                 releaseDateText = "diffus&eacute;s en <strong>" + Model.ReleaseDate + "</strong>";
