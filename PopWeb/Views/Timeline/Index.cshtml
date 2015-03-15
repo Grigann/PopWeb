@@ -6,7 +6,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2><span class="fa fa-calendar fa-lg" style="margin-right: 0.8em;"></span>Chronologie</h2>
+<div class="row" style="margin: 0; padding: 0;">
+    <div class="col-md-10" style="margin: 0; padding: 0;">
+        <h2><span class="fa fa-calendar fa-lg" style="margin-right: 0.8em;"></span>Chronologie</h2>
+    </div>
+</div>
 <hr />
 @if (Request.IsAuthenticated) {
 <div class="container">

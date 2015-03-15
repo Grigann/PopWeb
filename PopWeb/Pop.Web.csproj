@@ -170,6 +170,7 @@
     <Content Include="Content\css\typeahead.js-bootstrap.css" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\no_cover.jpg" />
+    <Content Include="Content\images\pop-culture.jpg" />
     <Content Include="Content\js\jqplot.canvasAxisLabelRenderer.min.js" />
     <Content Include="Content\js\jqplot.canvasAxisTickRenderer.min.js" />
     <Content Include="Content\js\jqplot.canvasTextRenderer.min.js" />
@@ -189,7 +190,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -277,9 +280,13 @@
     <Content Include="Views\TvSeries\EditSeason.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\lpj - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\lpj - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\lpj-pop - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\lpj-pop - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\lpj-pop - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\lpj-pop - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\lpj-pop - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\lpj-pop - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>

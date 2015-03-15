@@ -28,10 +28,11 @@ namespace Pop.Web.Controllers {
             using (var uow = new UnitOfWork(false)) {
                 var books = uow.Books
                     .All()
-                    .OrderBy(x => (x.BookSeries + x.Title))
-                    .ThenBy(x => x.BookNumber)
-                    .ToList();
-                return View(books);
+                    .OrderBy(x => x.BookSeries ?? x.Title)
+                    .ThenBy(x => x.BookNumber ?? 0)
+                    .ThenBy(x => x.Title);
+
+                return View(books.ToList());
             }
         }
 
