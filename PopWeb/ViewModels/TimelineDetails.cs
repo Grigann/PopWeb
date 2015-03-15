@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="TimelineDetails.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web.ViewModels {
@@ -15,7 +15,7 @@ namespace Pop.Web.ViewModels {
         /// <summary>
         /// The UI culture
         /// </summary>
-        private CultureInfo uiCulture;
+        private readonly CultureInfo uiCulture;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimelineDetails"/> class.
@@ -44,12 +44,10 @@ namespace Pop.Web.ViewModels {
         /// </summary>
         public string ThisWeekLabel {
             get {
-                var day = string.Empty;
-                if (this.ThisWeekLimit.Day == 1) {
-                    day = string.Format(this.uiCulture, "{0:dddd} 1er {0:MMMM}", this.ThisWeekLimit);
-                } else {
-                    day = string.Format(this.uiCulture, "{0:dddd d MMMM}", this.ThisWeekLimit);
-                }
+                var day = string.Format(
+                    this.uiCulture,
+                    this.ThisWeekLimit.Day == 1 ? "{0:dddd} 1er {0:MMMM}" : "{0:dddd d MMMM}",
+                    this.ThisWeekLimit);
 
                 return "Depuis le " + day;
             }
@@ -62,27 +60,23 @@ namespace Pop.Web.ViewModels {
             get {
                 var endOfPeriod = this.ThisWeekLimit.AddDays(-1);
 
-                var startDay = string.Empty;
+                string startDay;
                 if (this.LastWeekLimit.Day == 1) {
-                    if (this.LastWeekLimit.Month == endOfPeriod.Month) {
-                        startDay = string.Format(this.uiCulture, "{0:dddd} 1er", this.LastWeekLimit);
-                    } else {
-                        startDay = string.Format(this.uiCulture, "{0:dddd} 1er {0:MMMM}", this.LastWeekLimit);
-                    }
+                    startDay = string.Format(
+                        this.uiCulture,
+                        this.LastWeekLimit.Month == endOfPeriod.Month ? "{0:dddd} 1er" : "{0:dddd} 1er {0:MMMM}",
+                        this.LastWeekLimit);
                 } else {
-                    if (this.LastWeekLimit.Month == endOfPeriod.Month) {
-                        startDay = string.Format(this.uiCulture, "{0:dddd d}", this.LastWeekLimit);
-                    } else {
-                        startDay = string.Format(this.uiCulture, "{0:dddd d MMMM}", this.LastWeekLimit);
-                    }
+                    startDay = string.Format(
+                        this.uiCulture,
+                        this.LastWeekLimit.Month == endOfPeriod.Month ? "{0:dddd d}" : "{0:dddd d MMMM}",
+                        this.LastWeekLimit);
                 }
 
-                var endDay = string.Empty;
-                if (endOfPeriod.Day == 1) {
-                    endDay = string.Format(this.uiCulture, "{0:dddd} 1er {0:MMMM}", endOfPeriod);
-                } else {
-                    endDay = string.Format(this.uiCulture, "{0:dddd d MMMM}", endOfPeriod);
-                }
+                var endDay = string.Format(
+                    this.uiCulture,
+                    endOfPeriod.Day == 1 ? "{0:dddd} 1er {0:MMMM}" : "{0:dddd d MMMM}",
+                    endOfPeriod);
 
                 return "Entre le " + startDay + " et le " + endDay;
             }

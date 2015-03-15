@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.cs" company="DataCard Corporation">
-//     © 2014 DataCard Corporation
+// <copyright file="DateTimeExtensions.cs" company="Laurent Perruche-Joubert">
+//     © 2014-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain {

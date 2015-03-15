@@ -1,15 +1,13 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="Book.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Entities {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Globalization;
     using System.Linq;
-    using System.Web;
 
     /// <summary>
     /// Book entity
@@ -19,6 +17,7 @@ namespace Pop.Domain.Entities {
         /// Initializes a new instance of the <see cref="Book"/> class.
         /// </summary>
         public Book() {
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.ReadingSessions = new List<ReadingSession>();
         }
 

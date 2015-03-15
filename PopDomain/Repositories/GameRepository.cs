@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="GameRepository.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Repositories {
@@ -11,7 +11,7 @@ namespace Pop.Domain.Repositories {
     using NHibernate;
     using NHibernate.Linq;
 
-    using Pop.Domain.Entities;
+    using Entities;
 
     /// <summary>
     /// Books repository
@@ -74,7 +74,7 @@ namespace Pop.Domain.Repositories {
         /// <param name="title">A title</param>
         /// <returns>A game (null if not found)</returns>
         public Game FindByTitle(string title) {
-            return this.Session.Query<Game>().Where(x => x.Title == title).SingleOrDefault();
+            return this.Session.Query<Game>().SingleOrDefault(x => x.Title == title);
         }
     }
 }

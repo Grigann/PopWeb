@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="User.cs" company="Laurent Perruche-Joubert">
-//     © 2013-2014 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Entities {
@@ -13,12 +13,6 @@ namespace Pop.Domain.Entities {
     /// User entity
     /// </summary>
     public class User {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="User"/> class.
-        /// </summary>
-        public User() {
-        }
-
         /// <summary>
         /// Gets or sets the user id
         /// </summary>
@@ -40,7 +34,7 @@ namespace Pop.Domain.Entities {
             }
 
             set {
-                var sourceBytes = ASCIIEncoding.ASCII.GetBytes(value.Trim());
+                var sourceBytes = Encoding.ASCII.GetBytes(value.Trim());
                 var hashedBytes = new MD5CryptoServiceProvider().ComputeHash(sourceBytes);
                 this.EncryptedPassword = BitConverter.ToString(hashedBytes).Replace("-", "");
             }

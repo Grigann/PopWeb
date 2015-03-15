@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="TvSerie.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Entities {
@@ -8,7 +8,6 @@ namespace Pop.Domain.Entities {
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Web;
 
     /// <summary>
     /// TV serie entity
@@ -18,6 +17,7 @@ namespace Pop.Domain.Entities {
         /// Initializes a new instance of the <see cref="TvSerie"/> class.
         /// </summary>
         public TvSerie() {
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.Seasons = new List<TvSerieSeason>();
         }
 
@@ -76,7 +76,9 @@ namespace Pop.Domain.Entities {
                     return 0;
                 }
 
-                return this.Seasons.Select(x => x.Episodes.Count).Aggregate((total, x) => total += x);
+                return this.Seasons
+                    .Select(x => x.Episodes.Count)
+                    .Aggregate((total, x) => total + x);
             }
         }
 

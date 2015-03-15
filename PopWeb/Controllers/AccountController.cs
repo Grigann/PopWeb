@@ -1,15 +1,13 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="AccountController.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web.Controllers {
-    using System;
-    using System.Web;
     using System.Web.Mvc;
     using System.Web.Security;
 
-    using Pop.Domain;
+    using Domain;
 
     /// <summary>
     /// Account controller
@@ -22,7 +20,11 @@ namespace Pop.Web.Controllers {
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Login() {
-            TempData["referrerUrl"] = this.Request.UrlReferrer.ToString();
+            var urlReferrer = this.Request.UrlReferrer;
+            if (urlReferrer != null) {
+                this.TempData["referrerUrl"] = urlReferrer.ToString();
+            }
+
             return View();
         }
 

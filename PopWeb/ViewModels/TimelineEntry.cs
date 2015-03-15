@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="TimelineEntry.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web.ViewModels {
@@ -9,8 +9,8 @@ namespace Pop.Web.ViewModels {
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
 
-    using Pop.Domain;
-    using Pop.Domain.Entities;
+    using Domain;
+    using Domain.Entities;
 
     /// <summary>
     /// A timeline entry

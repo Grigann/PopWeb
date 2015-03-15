@@ -1,19 +1,19 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="TvSeriesController.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web.Controllers {
     using System;
-    using System.Drawing;
     using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
 
-    using Pop.Domain;
-    using Pop.Domain.Entities;
-    using Pop.Web.ViewModels;
+    using Domain;
+    using Domain.Entities;
+
+    using ViewModels;
 
     /// <summary>
     /// TV series controller
@@ -69,7 +69,6 @@ namespace Pop.Web.Controllers {
         /// Creates or updates a TV series and redirect to the View action
         /// </summary>
         /// <param name="tvSerie">A new series to create</param>
-        /// <param name="posterFile">An uploaded file (can be null)</param>
         /// <returns>An ActionResult</returns>
         [HttpPost]
         public ActionResult SaveOrUpdate(TvSerie tvSerie) {
@@ -111,7 +110,7 @@ namespace Pop.Web.Controllers {
         public ActionResult EditSeason(int serieId, int seasonId) {
             using (var uow = new UnitOfWork(false)) {
                 var tvSerie = uow.TvSeries.Find(serieId);
-                var season = tvSerie.Seasons.Where(x => x.Id == seasonId).SingleOrDefault();
+                var season = tvSerie.Seasons.SingleOrDefault(x => x.Id == seasonId);
                 return View(season);
             }
         }
@@ -119,7 +118,7 @@ namespace Pop.Web.Controllers {
         /// <summary>
         /// Creates or updates a TV series season and redirect to the View series action
         /// </summary>
-        /// <param name="tvSerie">A new season to create</param>
+        /// <param name="season">A new season to create</param>
         /// <param name="posterFile">An uploaded file (can be null)</param>
         /// <returns>An ActionResult</returns>
         [HttpPost]
@@ -136,10 +135,12 @@ namespace Pop.Web.Controllers {
                 }
 
                 // Saves the original image
-                var originalFilePath = Path.Combine(directory, fileName);
-                posterFile.SaveAs(originalFilePath);
+                if (fileName != null) {
+                    var originalFilePath = Path.Combine(directory, fileName);
+                    posterFile.SaveAs(originalFilePath);
 
-                ThumbnailHandler.CreateAllThumbs(originalFilePath);
+                    ThumbnailHandler.CreateAllThumbs(originalFilePath);
+                }
             }
 
             using (var uow = new UnitOfWork(true)) {
@@ -147,7 +148,7 @@ namespace Pop.Web.Controllers {
                 if (season.Id == 0) {
                     tvSerie.AddSeason(season);
                 } else {
-                    var oldSeason = tvSerie.Seasons.Where(x => x.Id == season.Id).SingleOrDefault();
+                    var oldSeason = tvSerie.Seasons.Single(x => x.Id == season.Id);
                     oldSeason.Number = season.Number;
                     oldSeason.ReleaseDate = season.ReleaseDate;
                     oldSeason.PosterFileName = season.PosterFileName;
@@ -168,13 +169,13 @@ namespace Pop.Web.Controllers {
         public JsonResult SaveOrUpdateEpisode(TvSerieEpisode episode) {
             using (var uow = new UnitOfWork(true)) {
                 var tvSerie = uow.TvSeries.Find(episode.TvSerieId);
-                var season = tvSerie.Seasons.Where(x => x.Id == episode.SeasonId).SingleOrDefault();
+                var season = tvSerie.Seasons.Single(x => x.Id == episode.SeasonId);
                 var newEpisode = episode;
 
                 if (newEpisode.Id == 0) {
                     season.AddEpisode(newEpisode);
                 } else {
-                    newEpisode = season.Episodes.Where(x => x.Id == episode.Id).SingleOrDefault();
+                    newEpisode = season.Episodes.Single(x => x.Id == episode.Id);
                     newEpisode.Number = episode.Number;
                     newEpisode.Title = episode.Title;
                     newEpisode.Director = episode.Director;
@@ -198,23 +199,17 @@ namespace Pop.Web.Controllers {
                 throw new Exception("Une erreur");
             }
 
-            TvSerie serie;
-            TvSerieSeason season;
-            TvSerieEpisode episode;
             TvWatchingSession watchingSession;
             using (var uow = new UnitOfWork(true)) {
-                serie = uow.TvSeries.FindByTitle(episodeEntry.Title);
-                if (serie == null) {
-                    serie = new TvSerie() { Title = episodeEntry.Title };
-                }
+                var serie = uow.TvSeries.FindByTitle(episodeEntry.Title) ?? new TvSerie() { Title = episodeEntry.Title };
 
-                season = serie.Seasons.Where(x => x.Number == episodeEntry.SeasonNb).SingleOrDefault();
+                var season = serie.Seasons.SingleOrDefault(x => x.Number == episodeEntry.SeasonNb);
                 if (season == null) {
                     season = new TvSerieSeason() { Number = episodeEntry.SeasonNb };
                     serie.AddSeason(season);
                 }
 
-                episode = season.Episodes.Where(x => x.Number == episodeEntry.EpisodeNb).SingleOrDefault();
+                var episode = season.Episodes.SingleOrDefault(x => x.Number == episodeEntry.EpisodeNb);
                 if (episode == null) {
                     episode = new TvSerieEpisode() { Number = episodeEntry.EpisodeNb, Title = episodeEntry.EpisodeTitle };
                     season.AddEpisode(episode);

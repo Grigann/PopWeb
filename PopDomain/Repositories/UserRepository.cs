@@ -1,19 +1,18 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="UserRepository.cs" company="Laurent Perruche-Joubert">
-//     © 2013-2014 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Repositories {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
 
+    using Entities;
+
     using NHibernate;
     using NHibernate.Linq;
-
-    using Pop.Domain.Entities;
 
     /// <summary>
     /// Users repository
@@ -60,12 +59,12 @@ namespace Pop.Domain.Repositories {
         /// <param name="password">An non-encrypted password</param>
         /// <returns>A user (null if not found)</returns>
         public User FindByNameAndPassword(string name, string password) {
-            var sourceBytes = ASCIIEncoding.ASCII.GetBytes(password.Trim());
+            var sourceBytes = Encoding.ASCII.GetBytes(password.Trim());
             var hashedBytes = new MD5CryptoServiceProvider().ComputeHash(sourceBytes);
             var encryptedPassword = BitConverter.ToString(hashedBytes).Replace("-", "");
-            return this.Session.Query<User>()
-                    .Where(x => x.Name == name && x.EncryptedPassword == encryptedPassword)
-                    .SingleOrDefault();
+            return this.Session
+                .Query<User>()
+                .SingleOrDefault(x => x.Name == name && x.EncryptedPassword == encryptedPassword);
         }
     }
 }

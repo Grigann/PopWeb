@@ -1,10 +1,9 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WebApiConfig.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web {
-    using System;
     using System.Web.Http;
 
     /// <summary>

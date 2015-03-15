@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="MoviesController.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web.Controllers {
@@ -10,9 +10,9 @@ namespace Pop.Web.Controllers {
     using System.Web;
     using System.Web.Mvc;
 
-    using Pop.Domain;
-    using Pop.Domain.Entities;
-    using Pop.Web.ViewModels;
+    using Domain;
+    using Domain.Entities;
+    using ViewModels;
 
     /// <summary>
     /// Movies controller
@@ -83,10 +83,12 @@ namespace Pop.Web.Controllers {
                 }
 
                 // Saves the original image
-                var originalFilePath = Path.Combine(directory, fileName);
-                posterFile.SaveAs(originalFilePath);
+                if (fileName != null) {
+                    var originalFilePath = Path.Combine(directory, fileName);
+                    posterFile.SaveAs(originalFilePath);
 
-                ThumbnailHandler.CreateAllThumbs(originalFilePath);
+                    ThumbnailHandler.CreateAllThumbs(originalFilePath);
+                }
             }
 
             using (var uow = new UnitOfWork(true)) {
@@ -121,13 +123,10 @@ namespace Pop.Web.Controllers {
                 throw new Exception("Une erreur");
             }
 
-            Movie movie;
             WatchingSession watchingSession;
             using (var uow = new UnitOfWork(true)) {
-                movie = uow.Movies.FindByTitle(movieEntry.Title);
-                if (movie == null) {
-                    movie = new Movie() { Title = movieEntry.Title, Director = movieEntry.Director };
-                }
+                var movie = uow.Movies.FindByTitle(movieEntry.Title) ??
+                            new Movie() { Title = movieEntry.Title, Director = movieEntry.Director };
 
                 watchingSession = new WatchingSession() { Date = DateTime.ParseExact(movieEntry.EntryDate, "dd/MM/yyyy", null) };
                 movie.AddWatchingSession(watchingSession);

@@ -1,13 +1,10 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="ErrorsController.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web.Controllers {
-    using System;
-    using System.Web;
     using System.Web.Mvc;
-    using System.Web.Security;
 
     /// <summary>
     /// Errors controller
@@ -28,7 +25,11 @@ namespace Pop.Web.Controllers {
         /// <returns>An ActionResult</returns>
         /// <param name="aspxerrorpath">An error path</param>
         public ActionResult Http404(string aspxerrorpath) {
-            ViewData["errorPath"] = this.Request.Url.Scheme + "://" + this.Request.Url.Authority + aspxerrorpath;
+            var url = this.Request.Url;
+            if (url != null) {
+                this.ViewData["errorPath"] = url.Scheme + "://" + url.Authority + aspxerrorpath;
+            }
+
             return View();
         }
     }

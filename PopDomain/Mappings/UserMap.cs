@@ -1,12 +1,12 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="UserMap.cs" company="Laurent Perruche-Joubert">
-//     © 2013-2014 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Mappings {
     using FluentNHibernate.Mapping;
 
-    using Pop.Domain.Entities;
+    using Entities;
 
     /// <summary>
     /// User entity mapping

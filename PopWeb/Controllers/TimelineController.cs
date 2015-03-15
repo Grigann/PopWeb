@@ -1,19 +1,18 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="TimelineController.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web.Controllers {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
-    using System.Web.Security;
 
-    using Pop.Domain;
-    using Pop.Domain.Entities;
-    using Pop.Web.ViewModels;
+    using Domain;
+    using Domain.Entities;
+
+    using ViewModels;
 
     /// <summary>
     /// Timeline controller
@@ -24,6 +23,7 @@ namespace Pop.Web.Controllers {
         /// </summary>
         /// <returns>An ActionResult</returns>
         [AllowAnonymous]
+        // ReSharper disable once FunctionComplexityOverflow
         public ActionResult Index() {
             var today = DateTime.Today;
             var thisWeekLimit = today.StartOfWeek(DayOfWeek.Monday);
@@ -46,14 +46,15 @@ namespace Pop.Web.Controllers {
                 moviesTitles = uow.Movies.All().OrderBy(x => x.Title).Select(x => x.Title).ToArray();
                 gamesTitles = uow.Games.All().OrderBy(x => x.Title).Select(x => x.Title).ToArray();
 
-                var readingSessions = uow.Books.All().SelectMany(x => x.ReadingSessions).Where(x => x.Date >= lastMonthLimit);
-                var watchingSessions = uow.Movies.All().SelectMany(x => x.WatchingSessions).Where(x => x.Date >= lastMonthLimit);
-                var gamingSessions = uow.Games.All().SelectMany(x => x.GamingSessions).Where(x => x.Date >= lastMonthLimit);
+                var readingSessions = uow.Books.All().SelectMany(x => x.ReadingSessions).Where(x => x.Date >= lastMonthLimit).ToList();
+                var watchingSessions = uow.Movies.All().SelectMany(x => x.WatchingSessions).Where(x => x.Date >= lastMonthLimit).ToList();
+                var gamingSessions = uow.Games.All().SelectMany(x => x.GamingSessions).Where(x => x.Date >= lastMonthLimit).ToList();
                 var tvSessions = uow.TvSeries.All()
                         .SelectMany(x => x.Seasons)
                         .SelectMany(x => x.Episodes)
                         .SelectMany(x => x.WatchingSessions)
-                        .Where(x => x.Date >= lastMonthLimit);
+                        .Where(x => x.Date >= lastMonthLimit)
+                        .ToList();
 
                 thisWeek = thisWeek
                     .Concat(readingSessions
@@ -126,7 +127,7 @@ namespace Pop.Web.Controllers {
                                 return session;
                             }))
                     .OrderByDescending(x => x.Title)
-                    .OrderByDescending(x => x.Date);
+                    .ThenByDescending(x => x.Date);
 
             var lastWeekEntries = lastWeek
                     .Where(x => x.GetType() != typeof(TvWatchingSession))
@@ -141,7 +142,7 @@ namespace Pop.Web.Controllers {
                                 return session;
                             }))
                     .OrderByDescending(x => x.Title)
-                    .OrderByDescending(x => x.Date);
+                    .ThenByDescending(x => x.Date);
 
             var lastMonthEntries = lastMonth
                     .Where(x => x.GetType() != typeof(TvWatchingSession))
@@ -156,7 +157,7 @@ namespace Pop.Web.Controllers {
                                 return session;
                             }))
                     .OrderByDescending(x => x.Title)
-                    .OrderByDescending(x => x.Date);
+                    .ThenByDescending(x => x.Date);
 
             var timelineDetails = new TimelineDetails() {
                 ThisWeekLimit = thisWeekLimit,

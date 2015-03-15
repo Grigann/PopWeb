@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="TvSerieRepository.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Repositories {
@@ -11,7 +11,7 @@ namespace Pop.Domain.Repositories {
     using NHibernate;
     using NHibernate.Linq;
 
-    using Pop.Domain.Entities;
+    using Entities;
 
     /// <summary>
     /// TV series repository
@@ -33,7 +33,7 @@ namespace Pop.Domain.Repositories {
         /// <summary>
         /// Saves or updates a series
         /// </summary>
-        /// <param name="game">A series</param>
+        /// <param name="tvSerie">A series</param>
         public void SaveOrUpdate(TvSerie tvSerie) {
             if (tvSerie == null) {
                 throw new ArgumentNullException("tvSerie");
@@ -74,7 +74,7 @@ namespace Pop.Domain.Repositories {
         /// <param name="title">A title</param>
         /// <returns>A series (null if not found)</returns>
         public TvSerie FindByTitle(string title) {
-            return this.Session.Query<TvSerie>().Where(x => x.Title == title).SingleOrDefault();
+            return this.Session.Query<TvSerie>().SingleOrDefault(x => x.Title == title);
         }
     }
 }

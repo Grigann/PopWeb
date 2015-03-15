@@ -1,10 +1,9 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="Movie.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Entities {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
 
@@ -16,6 +15,7 @@ namespace Pop.Domain.Entities {
         /// Initializes a new instance of the <see cref="Movie"/> class.
         /// </summary>
         public Movie() {
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.WatchingSessions = new List<WatchingSession>();
         }
 

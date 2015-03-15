@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ThumbnailHandler.cs" company="DataCard Corporation">
-//     © 2014 DataCard Corporation
+// <copyright file="ThumbnailHandler.cs" company="Laurent Perruche-Joubert">
+//     © 2014-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain {
@@ -50,6 +50,10 @@ namespace Pop.Domain {
                 var directory = Path.GetDirectoryName(filePath);
                 var fileName = Path.GetFileNameWithoutExtension(filePath);
 
+                if (directory == null) {
+                    throw new DirectoryNotFoundException("Unable to find the Images directory");
+                }
+
                 // Med thumb
                 var medThumbName = GetMedThumbName(fileName);
                 using (var medThumb = ResizeImage(image, -1, 160)) {
@@ -81,10 +85,10 @@ namespace Pop.Domain {
             var originalHeight = image.Height;
 
             if (newWidth == -1) {
-                var percentHeight = (float)newHeight / (float)originalHeight;
+                var percentHeight = newHeight / (float)originalHeight;
                 newWidth = (int)(originalWidth * percentHeight);
             } else if (newHeight == -1) {
-                var percentWidth = (float)newWidth / (float)originalWidth;
+                var percentWidth = newWidth / (float)originalWidth;
                 newHeight = (int)(originalHeight * percentWidth);
             }
 

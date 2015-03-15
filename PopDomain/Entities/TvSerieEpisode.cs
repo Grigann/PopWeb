@@ -1,13 +1,11 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="TvSerieEpisode.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Entities {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Web;
     using System.Web.Script.Serialization;
 
     /// <summary>
@@ -18,6 +16,7 @@ namespace Pop.Domain.Entities {
         /// Initializes a new instance of the <see cref="TvSerieEpisode"/> class.
         /// </summary>
         public TvSerieEpisode() {
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.WatchingSessions = new List<TvWatchingSession>();
         }
 

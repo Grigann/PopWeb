@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="UnitOfWork.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain {
@@ -8,7 +8,7 @@ namespace Pop.Domain {
 
     using NHibernate;
 
-    using Pop.Domain.Repositories;
+    using Repositories;
 
     /// <summary>
     /// Unit of Work object

@@ -1,11 +1,10 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="SessionFactory.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain {
-    using System;
-    using System.IO;
+    using Entities;
 
     using FluentNHibernate.Cfg;
     using FluentNHibernate.Cfg.Db;
@@ -13,8 +12,6 @@ namespace Pop.Domain {
     using NHibernate;
     using NHibernate.Cfg;
     using NHibernate.Tool.hbm2ddl;
-
-    using Pop.Domain.Entities;
 
     /// <summary>
     /// Session factory static class, used to generate database and open session
@@ -34,7 +31,7 @@ namespace Pop.Domain {
                     .Database(MsSqlConfiguration.MsSql2008
                             .ConnectionString(c => c.FromConnectionStringWithKey("DefaultConnection")))
                     .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Book>())
-                    // .ExposeConfiguration(BuildSchema)
+                    //// .ExposeConfiguration(BuildSchema)
                     .BuildSessionFactory();
         }
 

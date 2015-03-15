@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="MovieRepository.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain.Repositories {
@@ -11,7 +11,7 @@ namespace Pop.Domain.Repositories {
     using NHibernate;
     using NHibernate.Linq;
 
-    using Pop.Domain.Entities;
+    using Entities;
 
     /// <summary>
     /// Movies repository
@@ -33,7 +33,7 @@ namespace Pop.Domain.Repositories {
         /// <summary>
         /// Saves or updates a movie
         /// </summary>
-        /// <param name="game">A movie</param>
+        /// <param name="movie">The movie.</param>
         public void SaveOrUpdate(Movie movie) {
             if (movie == null) {
                 throw new ArgumentNullException("movie");
@@ -74,7 +74,7 @@ namespace Pop.Domain.Repositories {
         /// <param name="title">A title</param>
         /// <returns>A movie (null if not found)</returns>
         public Movie FindByTitle(string title) {
-            return this.Session.Query<Movie>().Where(x => x.Title == title).SingleOrDefault();
+            return this.Session.Query<Movie>().SingleOrDefault(x => x.Title == title);
         }
     }
 }

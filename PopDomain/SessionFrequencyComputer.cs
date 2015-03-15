@@ -1,14 +1,13 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="SessionFrequencyComputer.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Pop.Domain.Entities;
+    using Entities;
 
     /// <summary>
     /// Session frequency computer class, used to compute the frequency of the sessions
@@ -38,7 +37,7 @@ namespace Pop.Domain {
                 return SessionFrequency.Occasional;
             }
 
-            var dates = sessions.Select(x => x.Date);
+            var dates = sessions.Select(x => x.Date).ToList();
             var days = (dates.Max() - dates.Min()).TotalDays;
             var threshold = sessions.Count / days;
 
@@ -48,18 +47,22 @@ namespace Pop.Domain {
         /// <summary>
         /// Gets the threshold limit for the given type of session
         /// </summary>
-        /// <typeparam name="T">A type of session</typeparam>
+        /// <typeparam name="TS">A type of session</typeparam>
         /// <returns>A threshold as a double</returns>
-        public static double GetThresholdLimit<T>() {
-            if (typeof(T) == typeof(ReadingSession)) {
-                return ReadingThreshold;
-            } else if (typeof(T) == typeof(GamingSession)) {
+        public static double GetThresholdLimit<TS>() {
+            if (typeof(TS) == typeof(ReadingSession)) {
+                return ReadingThreshold;            
+            }
+
+            if (typeof(TS) == typeof(GamingSession)) {
                 return GamingThreshold;
-            } else if (typeof(T) == typeof(TvWatchingSession)) {
-                return 0.0f;
-            } else {
+            }
+
+            if (typeof(TS) == typeof(TvWatchingSession)) {
                 return 0.0f;
             }
+
+            return 0.0f;
         }
     }
 }

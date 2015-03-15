@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="GamesController.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web.Controllers {
@@ -10,9 +10,9 @@ namespace Pop.Web.Controllers {
     using System.Web;
     using System.Web.Mvc;
 
-    using Pop.Domain;
-    using Pop.Domain.Entities;
-    using Pop.Web.ViewModels;
+    using Domain;
+    using Domain.Entities;
+    using ViewModels;
 
     /// <summary>
     /// Games controller
@@ -84,10 +84,12 @@ namespace Pop.Web.Controllers {
                 }
 
                 // Saves the original image
-                var originalFilePath = Path.Combine(directory, fileName);
-                coverFile.SaveAs(originalFilePath);
+                if (fileName != null) {
+                    var originalFilePath = Path.Combine(directory, fileName);
+                    coverFile.SaveAs(originalFilePath);
 
-                ThumbnailHandler.CreateAllThumbs(originalFilePath);
+                    ThumbnailHandler.CreateAllThumbs(originalFilePath);
+                }
             }
 
             using (var uow = new UnitOfWork(true)) {
@@ -123,13 +125,10 @@ namespace Pop.Web.Controllers {
                 throw new Exception("Une erreur");
             }
 
-            Game game;
             GamingSession gamingSession;
             using (var uow = new UnitOfWork(true)) {
-                game = uow.Games.FindByTitle(gameEntry.Title);
-                if (game == null) {
-                    game = new Game() { Title = gameEntry.Title, Developper = gameEntry.Developper };
-                }
+                var game = uow.Games.FindByTitle(gameEntry.Title) ??
+                           new Game() { Title = gameEntry.Title, Developper = gameEntry.Developper };
 
                 gamingSession = new GamingSession() { 
                     Date = DateTime.ParseExact(gameEntry.EntryDate, "dd/MM/yyyy", null), 

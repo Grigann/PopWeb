@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="ChartHelper.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Domain {
@@ -9,7 +9,7 @@ namespace Pop.Domain {
     using System.Globalization;
     using System.Linq;
 
-    using Pop.Domain.Entities;
+    using Entities;
 
     /// <summary>
     /// Chart build helper object
@@ -23,11 +23,14 @@ namespace Pop.Domain {
         /// <returns>An associated chart date</returns>
         public DateTime ComputeChartDate(DateTime currentDate, ChartIntervalType chartInterval) {
             var chartDate = currentDate;
-            if (chartInterval == ChartIntervalType.Weekly) {
-                var delta = CultureInfo.GetCultureInfo("fr-FR").DateTimeFormat.FirstDayOfWeek - chartDate.DayOfWeek;
-                chartDate = delta > 0 ? chartDate.AddDays(delta - 7) : chartDate.AddDays(delta);
-            } else if (chartInterval == ChartIntervalType.Monthly) {
-                chartDate = new DateTime(chartDate.Year, chartDate.Month, 1);
+            switch (chartInterval) {
+                case ChartIntervalType.Weekly:
+                    var delta = CultureInfo.GetCultureInfo("fr-FR").DateTimeFormat.FirstDayOfWeek - chartDate.DayOfWeek;
+                    chartDate = delta > 0 ? chartDate.AddDays(delta - 7) : chartDate.AddDays(delta);
+                    break;
+                case ChartIntervalType.Monthly:
+                    chartDate = new DateTime(chartDate.Year, chartDate.Month, 1);
+                    break;
             }
 
             return chartDate;
@@ -43,7 +46,7 @@ namespace Pop.Domain {
                 return ChartIntervalType.None;
             }
 
-            var dates = sessions.Select(x => x.Date);
+            var dates = sessions.Select(x => x.Date).ToList();
             var interval = (dates.Max() - dates.Min()).TotalDays;
             return interval < (7 * 3)
                 ? ChartIntervalType.Daily
@@ -57,7 +60,7 @@ namespace Pop.Domain {
         /// </summary>
         public IDictionary<DateTime, int> ExtractChartSessions(IList<T> sessions, ChartIntervalType intervalType) {
             var result = new Dictionary<DateTime, int>();
-            var dates = sessions.Select(x => x.Date);
+            var dates = sessions.Select(x => x.Date).ToList();
             if (dates.Distinct().Count() < 3) {
                 // To draw a chart we need at least three dates
                 return result;
@@ -67,7 +70,7 @@ namespace Pop.Domain {
 
             // Initializing the dates tick
             var interval = (dates.Max() - first).TotalDays;
-            for (int i = 0; i <= interval; i++) {
+            for (var i = 0; i <= interval; i++) {
                 var date = this.ComputeChartDate(first.AddDays(i), intervalType);
                 if (!result.ContainsKey(date)) {
                     result.Add(date, 0);

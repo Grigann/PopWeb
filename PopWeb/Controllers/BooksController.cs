@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="BooksController.cs" company="Laurent Perruche-Joubert">
-//     © 2013 Laurent Perruche-Joubert
+//     © 2013-2015 Laurent Perruche-Joubert
 // </copyright>
 //-----------------------------------------------------------------------
 namespace Pop.Web.Controllers {
@@ -10,10 +10,10 @@ namespace Pop.Web.Controllers {
     using System.Web;
     using System.Web.Mvc;
 
-    using Pop.Domain;
-    using Pop.Domain.Entities;
+    using Domain;
+    using Domain.Entities;
 
-    using Pop.Web.ViewModels;
+    using ViewModels;
 
     /// <summary>
     /// Books controller
@@ -90,10 +90,12 @@ namespace Pop.Web.Controllers {
                 }
 
                 // Saves the original image
-                var originalFilePath = Path.Combine(directory, fileName);
-                coverFile.SaveAs(originalFilePath);
+                if (fileName != null) {
+                    var originalFilePath = Path.Combine(directory, fileName);
+                    coverFile.SaveAs(originalFilePath);
 
-                ThumbnailHandler.CreateAllThumbs(originalFilePath);
+                    ThumbnailHandler.CreateAllThumbs(originalFilePath);
+                }
             }
 
             using (var uow = new UnitOfWork(true)) {
@@ -142,13 +144,10 @@ namespace Pop.Web.Controllers {
                 throw new Exception("Une erreur");
             }
 
-            Book book;
             ReadingSession readingSession;
             using (var uow = new UnitOfWork(true)) {
-                book = uow.Books.FindByTitle(bookEntry.Title);
-                if (book == null) {
-                    book = new Book() { Title = bookEntry.Title, Writer = bookEntry.Writer };
-                }
+                var book = uow.Books.FindByTitle(bookEntry.Title) ??
+                           new Book() { Title = bookEntry.Title, Writer = bookEntry.Writer };
 
                 readingSession = new ReadingSession() { 
                     Date = DateTime.ParseExact(bookEntry.EntryDate, "dd/MM/yyyy", null),
