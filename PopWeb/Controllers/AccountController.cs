@@ -41,7 +41,7 @@ namespace Pop.Web.Controllers {
                     return RedirectToAction("Login");
                 }
 
-                FormsAuthentication.SetAuthCookie(userLogin, false);
+                FormsAuthentication.SetAuthCookie(userLogin, true);
                 if (string.IsNullOrEmpty(referrerUrl) || referrerUrl.EndsWith("login")) {
                     return this.RedirectToAction("Index", "Timeline");
                 }
