@@ -77,7 +77,6 @@
                                     <th style="display: none;"></th>
                                     <th class="text-center">#</th>
                                     <th>Titre</th>
-                                    <th>R&eacute;alisateur</th>
                                     @if (Request.IsAuthenticated) { 
                                         <th></th> 
                                     }
@@ -91,7 +90,6 @@
                                         <td style="display:none;"><input id="e-@season.Id-@episode.Id-id" type="text" value="@episode.Id" /></td>
                                         <td class="col-md-2"><input id="e-@season.Id-@episode.Id-number" type="text" class="form-control" value="@episode.Number" placeholder="#" /></td>
                                         <td><input id="e-@season.Id-@episode.Id-title" type="text" class="form-control" value="@episode.Title" placeholder="Titre" /></td>
-                                        <td><input id="e-@season.Id-@episode.Id-director" type="text" class="form-control" value="@episode.Director" placeholder="Réalisateur" /></td>
                                         @if (Request.IsAuthenticated) {
                                             <td class="col-md-1 text-center"><button type="button" id="save-@season.Id-@episode.Id" class="btn btn-default save-episode"><span class="fa fa-save fa-lg"></span></button></td>
                                         }
@@ -104,7 +102,6 @@
                                     <td style="display:none;"><input id="e-@season.Id-new-id" type="text" value="0" /></td>
                                     <td class="col-md-2"><input id="e-@season.Id-new-number" type="text" class="form-control" value="" placeholder="#" /></td>
                                     <td><input id="e-@season.Id-new-title" type="text" class="form-control" value="" placeholder="Titre" /></td>
-                                    <td><input id="e-@season.Id-new-director" type="text" class="form-control" value="" placeholder="Réalisateur" /></td>
                                     <td class="col-md-1 text-center"><button type="button" id="save-@season.Id-new" class="btn btn-default save-episode"><span class="fa fa-save fa-lg"></span></button></td>
                                 </tr>
                                 }
@@ -136,7 +133,6 @@
         episode.Id        = $(prefix + 'id').val();
         episode.Number    = $(prefix + 'number').val();
         episode.Title     = $(prefix + 'title').val();
-        episode.Director  = $(prefix + 'director').val();
 
         var saveUrl = '@Url.Action("SaveOrUpdateEpisode", "TvSeries")';
         $.ajax({
@@ -149,14 +145,9 @@
                 if (seasonAndEpisodeId == episode.SeasonId + '-new') {
                     $(prefix + 'number').val('');
                     $(prefix + 'title').val('');
-                    $(prefix + 'director').val('');
 
                     if (data.Title == undefined) {
                         data.Title = '';
-                    }
-
-                    if (data.Director == undefined) {
-                        data.Director = '';
                     }
 
                     var tdSerieId         = '<td style="display:none;"><input id="e-' + data.SeasonId + '-' + data.Id + '-serieId" type="text" value="@Model.Id" /></td>';
@@ -164,9 +155,8 @@
                     var tdEpisodeId       = '<td style="display:none;"><input id="e-' + data.SeasonId + '-' + data.Id + '-id" type="text" value="' + data.Id + '" /></td>';
                     var tdEpisodeNb       = '<td class="col-md-2"><input id="e-' + data.SeasonId + '-' + data.Id + '-number" type="text" class="form-control" value="' + data.Number + '" placeholder="#" /></td>';
                     var tdEpisodeTitle    = '<td><input id="e-' + data.SeasonId + '-' + data.Id + '-title" type="text" class="form-control" value="' + data.Title + '" placeholder="Titre" /></td>';
-                    var tdEpisodeDirector = '<td><input id="e-' + data.SeasonId + '-' + data.Id + '-director" type="text" class="form-control" value="' + data.Director + '" placeholder="Réalisateur" /></td>';
                     var tdEpisodeSubmit   = '<td class="col-md-1 text-center"><button type="button" id="save-' + data.SeasonId + '-' + data.Id + '" class="btn btn-default save-episode"><span class="fa fa-save fa-lg"></span></button></td>';
-                    $('#new-' + data.SeasonId + '-row').before('<tr>' + tdSerieId + tdSeasonId + tdEpisodeId + tdEpisodeNb + tdEpisodeTitle + tdEpisodeDirector + tdEpisodeSubmit + '</tr>');
+                    $('#new-' + data.SeasonId + '-row').before('<tr>' + tdSerieId + tdSeasonId + tdEpisodeId + tdEpisodeNb + tdEpisodeTitle + tdEpisodeSubmit + '</tr>');
                     $('#save-' + data.SeasonId + '-' + data.Id).click(function () { return saveEpisode(data.Id); });
 
                     $('#e-' + data.SeasonId + '-new-number').focus();
