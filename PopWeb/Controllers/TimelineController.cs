@@ -126,8 +126,8 @@ namespace Pop.Web.Controllers {
                                 session.Details = x.Aggregate((final, current) => final.AddDetails(current.Details)).Details;
                                 return session;
                             }))
-                    .OrderByDescending(x => x.Title)
-                    .ThenByDescending(x => x.Date);
+                    .OrderByDescending(x => x.Date)
+                    .ThenByDescending(x => x.Title);
 
             var lastWeekEntries = lastWeek
                     .Where(x => x.GetType() != typeof(TvWatchingSession))
@@ -141,8 +141,8 @@ namespace Pop.Web.Controllers {
                                 session.Details = x.Aggregate((final, current) => final.AddDetails(current.Details)).Details;
                                 return session;
                             }))
-                    .OrderByDescending(x => x.Title)
-                    .ThenByDescending(x => x.Date);
+                    .OrderByDescending(x => x.Date)
+                    .ThenByDescending(x => x.Title);
 
             var lastMonthEntries = lastMonth
                     .Where(x => x.GetType() != typeof(TvWatchingSession))
@@ -156,8 +156,8 @@ namespace Pop.Web.Controllers {
                                 session.Details = x.Aggregate((final, current) => final.AddDetails(current.Details)).Details;
                                 return session;
                             }))
-                    .OrderByDescending(x => x.Title)
-                    .ThenByDescending(x => x.Date);
+                    .OrderByDescending(x => x.Date)
+                    .ThenByDescending(x => x.Title);
 
             var timelineDetails = new TimelineDetails() {
                 ThisWeekLimit = thisWeekLimit,
