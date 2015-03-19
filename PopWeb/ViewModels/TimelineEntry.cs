@@ -102,29 +102,20 @@ namespace Pop.Web.ViewModels {
         }
 
         /// <summary>
-        /// Escapes the string.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The HTML escaped value, with also ' convert to &#39;</returns>
-        private static string EscapeString(string value) {
-            return HttpUtility.HtmlEncode(value);
-        }
-
-        /// <summary>
         /// Initializes the entry with a reading session
         /// </summary>
         /// <param name="readingSession">A reading session</param>
         /// <param name="controller">A controller</param>
         private void Initialize(ReadingSession readingSession, Controller controller) {
             this.ViewUrl = controller.Url.Action("View", "Books", new { id = readingSession.Book.Id });
-            this.Title = EscapeString(readingSession.Book.Title);
+            this.Title = HttpUtility.HtmlEncode(readingSession.Book.Title);
             this.Details = string.IsNullOrEmpty(readingSession.Book.PublicationDate)
-                    ? EscapeString(readingSession.Book.Writer)
-                    : EscapeString(readingSession.Book.Writer + ", " + readingSession.Book.PublicationDate);
+                    ? HttpUtility.HtmlEncode(readingSession.Book.Writer)
+                    : HttpUtility.HtmlEncode(readingSession.Book.Writer + ", " + readingSession.Book.PublicationDate);
             this.ImageUrl = string.IsNullOrEmpty(readingSession.Book.CoverFileName)
                     ? "/Content/images/no_cover.jpg"
                     : "/Content/images/books/" + readingSession.Book.MediumThumbName;
-            this.ImageAlt = EscapeString("Couverture de " + readingSession.Book.Title);
+            this.ImageAlt = HttpUtility.HtmlEncode("Couverture de " + readingSession.Book.Title);
         }
 
         /// <summary>
@@ -134,14 +125,14 @@ namespace Pop.Web.ViewModels {
         /// <param name="controller">A controller</param>
         private void Initialize(WatchingSession watchingSession, Controller controller) {
             this.ViewUrl = controller.Url.Action("View", "Movies", new { id = watchingSession.Movie.Id });
-            this.Title = EscapeString(watchingSession.Movie.Title);
+            this.Title = HttpUtility.HtmlEncode(watchingSession.Movie.Title);
             this.Details = string.IsNullOrEmpty(watchingSession.Movie.ReleaseDate)
-                    ? EscapeString(watchingSession.Movie.Director)
-                    : EscapeString(watchingSession.Movie.Director + ", " + watchingSession.Movie.ReleaseDate);
+                    ? HttpUtility.HtmlEncode(watchingSession.Movie.Director)
+                    : HttpUtility.HtmlEncode(watchingSession.Movie.Director + ", " + watchingSession.Movie.ReleaseDate);
             this.ImageUrl = string.IsNullOrEmpty(watchingSession.Movie.PosterFileName)
                     ? "/Content/images/no_cover.jpg"
                     : "/Content/images/movies/" + watchingSession.Movie.MediumThumbName;
-            this.ImageAlt = EscapeString("Poster de " + watchingSession.Movie.Title);
+            this.ImageAlt = HttpUtility.HtmlEncode("Poster de " + watchingSession.Movie.Title);
         }
 
         /// <summary>
@@ -151,14 +142,14 @@ namespace Pop.Web.ViewModels {
         /// <param name="controller">A controller</param>
         private void Initialize(GamingSession gamingSession, Controller controller) {
             this.ViewUrl = controller.Url.Action("View", "Games", new { id = gamingSession.Game.Id });
-            this.Title = EscapeString(gamingSession.Game.Title);
+            this.Title = HttpUtility.HtmlEncode(gamingSession.Game.Title);
             this.Details = string.IsNullOrEmpty(gamingSession.Game.ReleaseDate)
-                    ? EscapeString(gamingSession.Game.Developper)
-                    : EscapeString(gamingSession.Game.Developper + ", " + gamingSession.Game.ReleaseDate);
+                    ? HttpUtility.HtmlEncode(gamingSession.Game.Developper)
+                    : HttpUtility.HtmlEncode(gamingSession.Game.Developper + ", " + gamingSession.Game.ReleaseDate);
             this.ImageUrl = string.IsNullOrEmpty(gamingSession.Game.CoverFileName)
                     ? "/Content/images/no_cover.jpg"
                     : "/Content/images/games/" + gamingSession.Game.MediumThumbName;
-            this.ImageAlt = EscapeString("Couverture de " + gamingSession.Game.Title);
+            this.ImageAlt = HttpUtility.HtmlEncode("Couverture de " + gamingSession.Game.Title);
         }
 
         /// <summary>
@@ -172,8 +163,8 @@ namespace Pop.Web.ViewModels {
             var serie = season.TvSerie;
 
             this.ViewUrl = controller.Url.Action("View", "TvSeries", new { id = serie.Id }) + "#tab_saison-" + season.Number;
-            this.Title = EscapeString(serie.Title) + " - Saison " + season.Number;
-            this.Details = "Ep. " + tvWatchingSession.Episode.Number + " - <em>\"" + EscapeString(episode.Title) + "\"</em>";
+            this.Title = HttpUtility.HtmlEncode(serie.Title) + " - Saison " + season.Number;
+            this.Details = "Ep. " + tvWatchingSession.Episode.Number + " - \"<em>" + HttpUtility.HtmlEncode(episode.Title) + "\"</em>";
             this.ImageUrl = string.IsNullOrEmpty(season.PosterFileName)
                     ? "/Content/images/no_cover.jpg"
                     : "/Content/images/tvSeries/" + season.MediumThumbName;
