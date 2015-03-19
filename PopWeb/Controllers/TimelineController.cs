@@ -168,10 +168,10 @@ namespace Pop.Web.Controllers {
                 LastMonth = lastMonthEntries.ToList()
             };
 
-            ViewBag.SeriesTitles = "'" + string.Join("', '", seriesTitles) + "'";
-            ViewBag.BooksTitles = "'" + string.Join("', '", booksTitles) + "'";
-            ViewBag.MoviesTitles = "'" + string.Join("', '", moviesTitles) + "'";
-            ViewBag.GamesTitles = "'" + string.Join("', '", gamesTitles) + "'";
+            ViewBag.SeriesTitles = "\"" + string.Join("\", \"", seriesTitles) + "\"";
+            ViewBag.BooksTitles = "\"" + string.Join("\", \"", booksTitles) + "\"";
+            ViewBag.MoviesTitles = "\"" + string.Join("\", \"", moviesTitles) + "\"";
+            ViewBag.GamesTitles = "\"" + string.Join("\", \"", gamesTitles) + "\"";
 
             return View(timelineDetails);
         }
