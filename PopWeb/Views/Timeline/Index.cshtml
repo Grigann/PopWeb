@@ -139,7 +139,7 @@
         }
         else {
             foreach (var entry in Model.ThisWeek) {
-                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="height: 160px; margin: 1.4em 1.4em 0 0;" /></a>
+                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt='@Html.Raw(entry.ImageAlt)' style="height: 160px; margin: 1.4em 1.4em 0 0;" /></a>
             }
         }
     </div>
@@ -154,7 +154,7 @@
         }
         else {
             foreach (var entry in Model.LastWeek) {
-                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="height: 160px; margin: 1.4em 1.4em 0 0;" /></a>
+                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt='@Html.Raw(entry.ImageAlt)' style="height: 160px; margin: 1.4em 1.4em 0 0;" /></a>
             }
         }
     </div>
@@ -169,7 +169,7 @@
         }
         else {
             foreach (var entry in Model.LastMonth) {
-                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt="@Html.Raw(entry.ImageAlt)" style="height: 160px; margin: 1.4em 1.4em 0 0;" /></a>
+                <a href="@entry.ViewUrl"><img class="timeline-entry" title='<strong>@Html.Raw(entry.Title)</strong>' data-content='@Html.Raw(entry.Details)' src="@entry.ImageUrl" alt='@Html.Raw(entry.ImageAlt)' style="height: 160px; margin: 1.4em 1.4em 0 0;" /></a>
             }
         }
     </div>
